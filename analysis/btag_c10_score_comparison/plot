@@ -1,0 +1,13 @@
+#!/bin/bash
+if [ $1 = 'all' ]; then
+    ./plot ttbar online
+    ./plot ttbar online_official_tune
+    ./plot ttbar offline
+    ./plot roc ttbar
+elif [ $1 = 'init' ]; then
+    root -l -b -q record_discriminants.cxx
+elif [ $1 = 'roc' ]; then
+    root -l -b -q "roc_curves.cxx(\"$2\")"
+else 
+    root -l -b -q "generate_plots.cxx(\"$1\", \"$2\")"
+fi
