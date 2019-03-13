@@ -1,0 +1,293 @@
+// code to convert XML configuration for TMVA to TString 
+// and store them in a ROOT file, in order to store them in COOL
+
+#include <TFile.h>
+#include <TString.h>
+#include <TObjString.h>
+#include <TTree.h>
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+
+#include "egammaBDT/Node.h"
+#include "egammaBDT/BDT.h"
+
+#include "TMVA/Reader.h"
+#include "TMVA/MethodBDT.h"
+
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
+
+
+TString* getVariables(TMVA::Reader *reader) {
+  TString *str = new TString();
+  std::vector<TMVA::VariableInfo>::const_iterator it;
+  for (it = reader->DataInfo().GetVariableInfos().begin(); it != reader->DataInfo().GetVariableInfos().end(); ++it)
+    str->Append(TString(str->Length() ? "," : "") + it->GetLabel());
+
+  return str;
+}
+
+void TList2TTree(TList *list, string m_taggerNameBase, string author) {
+  const string treeName  ="BDT";
+  const string varStrName="variables";
+
+  TMVA::Reader* tmvaReader = new TMVA::Reader("Silent");
+  vector<string> inputVars; inputVars.clear();
+  std::ostringstream iss; //iss.clear();
+
+  unsigned nvars=0;
+  vector<float> dummyInputVars;
+  for(int i=0; i<list->GetSize(); ++i) {
+    TObjString* ss = (TObjString*)list->At(i);
+    string sss = ss->String().Data();
+    //KM: if it doesn't find "<" in the string, it starts from non-space character                                                                                                                                                  
+    int posi = sss.find('<')!=string::npos ? sss.find('<') : sss.find_first_not_of(" ");
+    string tmp = sss.erase(0,posi);
+    //cout<<tmp<<endl;                                                                                                                                                                                                    
+    iss << tmp.data();
+    if (tmp.find("<Variable")!=string::npos ) {
+      if ( tmp.find("Variables NVar")!=string::npos ) {
+	string newString=tmp.substr(tmp.find("\"")+1,tmp.find("\" ")-(tmp.find("\"")+1));
+	nvars=stoi(newString);
+	cout<<"INFO: "<<nvars<<" variables are denifed in the xml."<<endl;
+	dummyInputVars.resize(nvars);
+	fill(dummyInputVars.begin(),dummyInputVars.end(),0);
+      }
+      else if ( tmp.find("Variable VarIndex")!=string::npos ) {
+	string varIndex  =tmp.substr(tmp.find("=\"")+2, tmp.find("\" ")-(tmp.find("=\"")+2));
+	string tmpVar  = tmp.erase(0,tmp.find("Expression=\"")+12);
+	string varExpress=tmp.substr(0, tmp.find("\""));
+	inputVars.push_back(varExpress);
+	tmvaReader->AddVariable(varExpress.data(),&(dummyInputVars.at(stoi(varIndex))));
+      }
+    }
+  }
+  TMVA::IMethod* method= tmvaReader->BookMVA(TMVA::Types::kBDT, iss.str().data() );
+
+  const string filename= m_taggerNameBase+"_"+author+".root";
+  TObjArray trees, variables, classes;
+  TString *vars = getVariables(tmvaReader);  assert(vars);//TString *vars = egammaMVACalib::getVariables(tmvaReader);  assert(vars);
+  TMVA::MethodBDT* tbdt= dynamic_cast<TMVA::MethodBDT*>(method);  assert(tbdt);
+  egammaMVACalibNmsp::BDT *bdt= new egammaMVACalibNmsp::BDT(tbdt);
+  TFile *f = new TFile(filename.data(),"recreate");
+  TTree *tree = bdt->WriteTree(treeName.data());
+  variables.AddAtAndExpand(new TObjString(*vars),0);
+  trees.AddAtAndExpand(tree,0);
+  cout<<"INFO: Writing down TTree: "<<tree->GetName()<<", variables: "<<varStrName<<" in "<<filename<<endl;
+  f->mkdir((m_taggerNameBase+"/"+author+"/"+m_taggerNameBase+"Calib").data());
+  f->cd   ((m_taggerNameBase+"/"+author+"/"+m_taggerNameBase+"Calib").data());
+  const int option = (TObject::kSingleKey | TObject::kOverwrite);
+  trees.Write();
+  variables.Write(varStrName.data(),option);
+  f->Close();
+  delete bdt;
+
+  return;
+}
+
+// filename: name of XML input file without the .xml extension
+// if destJetColl is not specified, copy the same xml file to all collections:
+void xml2Root(TString filename, TString taggerName="MV1", TString destJetColl="",bool produceTTree=1) {
+
+  cout<<endl;
+  cout<<"INFO: Preparing root calibration file for tagger: "<<taggerName<<endl;
+  TList mylist;
+
+  TString afname=filename+".xml";
+  if (filename.EndsWith(".xml")) afname=filename;
+  else                           afname=filename+".xml";
+
+  cout<<"INFO: Opening XML file: "<<afname<<endl;
+  ifstream file(afname);
+
+  bool isBDT=false;
+  bool isBdtGrad=false;
+  if(file) {
+    string line;
+    unsigned lineNum=0;
+    string aftWeight="";
+    bool bfrWeight=1;
+    while(getline(file, line) && (line.size() > 0)) {
+      //if (lineNum<100) cout << line << endl;
+      
+      if (line.find("<Weights")!=string::npos) bfrWeight=0;
+
+      if (bfrWeight) {
+	TObjString *ss =new TObjString(line.c_str());
+	//cout<<line<<endl;
+	if (line.find("<MethodSetup")!=string::npos) {
+	  isBDT=line.find("BDT")!=string::npos;
+	}
+	if (line.find("BoostType")!=string::npos) {
+	  isBdtGrad=line.find("Grad")!=string::npos;
+	}
+	//cout<< ss->String() << endl;
+	mylist.AddLast(ss);
+      }
+      else {
+	const int posi = line.find('<')!=string::npos ? line.find('<') : line.find_first_not_of(" ");
+	string tmp = line.erase(0,posi);
+	aftWeight+=tmp;
+      }
+      lineNum++;
+    }
+    //cout<<"kmdebug: parsing xml finished."<<endl;
+    TObjString *ss =new TObjString(aftWeight.c_str());
+    mylist.AddLast(ss);
+
+  }
+  else{
+    cout << "Unable to process file " << filename << endl;
+  }
+
+  if (produceTTree and isBDT and isBdtGrad) {
+    if(destJetColl=="") {
+      destJetColl="AntiKt4EMTopo";
+      cout<<"WARNING: produceTTree=1 is given without the argument for the jet collection. Assigning destJetColl= "<<destJetColl<<endl;
+      //exit(1);
+    }
+    
+    TList2TTree(&mylist,taggerName.Data(),destJetColl.Data());
+    return;
+  }
+  else if (produceTTree and (!isBDT or !isBdtGrad)) {
+    cout<<"WARNING: produceTTree=1 is currently supported only for the gradient boosted decision tree. MVA method in the xml is not yet supported."
+	<<"       : converting xml to TList in the output root file."<<endl;
+    //exit(1);
+  }
+  
+  TString sjcoll;
+  vector<string> jetcollnames;
+  if(destJetColl=="") {
+    cout<<"Assigning this XML file to ALL jet collections !"<<endl;
+    sjcoll = "ALL";
+    jetcollnames.push_back("AntiKt4EMTopo");//for run1 collections
+    // jetcollnames.push_back("AntiKt4TopoEM");
+    // jetcollnames.push_back("AntiKt4LCTopo");
+    // jetcollnames.push_back("AntiKt10LCTopo");
+  }
+  else {
+    cout<<"Assigning this XML file to jet collection "<<destJetColl<<endl;
+    sjcoll = destJetColl;
+    string djc(destJetColl.Data());
+    jetcollnames.push_back(djc);
+  }
+
+  TString rfilename(filename); rfilename.Append("_"); 
+  rfilename.Append(taggerName); rfilename.Append("_");
+  rfilename.Append(sjcoll); rfilename.Append(".root");
+  cout<<"Creating root file: "<<rfilename<<endl;
+  TFile* rootfile = new TFile(rfilename,"recreate");
+  TDirectory* MV1dir = rootfile->mkdir(taggerName);
+  MV1dir->cd();
+  for(unsigned int ij=0; ij<jetcollnames.size(); ++ij) { 
+    cout<<"Creating directory for jet collection "<<jetcollnames[ij]<<endl;
+    MV1dir->cd();
+    TDirectory* jetdir = MV1dir->mkdir(jetcollnames[ij].c_str());
+    jetdir->cd();
+    mylist.Write(taggerName+"Calib",TObject::kSingleKey);
+  }
+  rootfile->cd();
+  rootfile->Close();
+  delete rootfile;
+}
+
+// void txt2Root(TString filename, TString taggerName="JetFitterCB", TString destJetColl="") {
+//   std::cout<<std::endl;
+//   std::cout<<"Preparing root calibration file for tagger: "<<taggerName<<std::endl;
+//   TList mylist;
+//   TString afname(filename); afname.Append(".txt");
+//   std::cout<<"Opening TXT file: "<<afname<<std::endl;
+//   ifstream file(afname);
+//   if(file) {
+//     string line;
+//     while(getline(file, line) && (line.size() > 0)){
+//       //      cout << line << endl;
+//       TObjString *ss =new TObjString(line.c_str());
+//       //cout<< ss->String() << endl;
+//       mylist.AddLast(ss);
+//     }
+//   }
+//   else{
+//     cout << "Unable to process file " << filename << endl;
+//   }
+//   TString sjcoll;
+//   vector<string> jetcollnames;
+//   if(destJetColl=="") {
+//     std::cout<<"Assigning this TXT file to ALL jet collections !"<<std::endl;
+//     sjcoll = "ALL";
+//     // jetcollnames.push_back("AntiKt6Tower");
+//     // jetcollnames.push_back("AntiKt4Tower");
+//     jetcollnames.push_back("AntiKt4TopoEM");
+//     // jetcollnames.push_back("AntiKt6TopoEM");
+//     // jetcollnames.push_back("AntiKt4LCTopo");
+//     // jetcollnames.push_back("AntiKt6LCTopo");
+//   } else {
+//     std::cout<<"Assigning this TXT file to jet collection "<<destJetColl<<std::endl;
+//     sjcoll = destJetColl;
+//     std::string djc(destJetColl.Data());
+//     jetcollnames.push_back(djc);
+//   }
+//   TString rfilename(filename); rfilename.Append("_"); 
+//   rfilename.Append(taggerName); rfilename.Append("_");
+//   rfilename.Append(sjcoll); rfilename.Append(".root");
+//   std::cout<<"Creating root file: "<<rfilename<<std::endl;
+//   TFile* rootfile = new TFile(rfilename,"recreate");
+//   TDirectory* MV1dir = rootfile->mkdir(taggerName);
+//   MV1dir->cd();
+//   for(unsigned int ij=0; ij<jetcollnames.size(); ++ij){ 
+//     std::cout<<"Creating directory for jet collection "<<jetcollnames[ij]<<std::endl;
+//     MV1dir->cd();
+//     TDirectory* jetdir = MV1dir->mkdir(jetcollnames[ij].c_str());
+//     jetdir->cd();
+//     mylist.Write(taggerName+"Calib",TObject::kSingleKey);
+//   }
+//   rootfile->cd();
+//   rootfile->Close();
+//   delete rootfile;
+// }
+
+void writeXML(string file, TString taggerName, string dir) {
+  ofstream ofile( ("newxml2_"+dir+".xml").c_str() );
+  if(!ofile){
+    cout<<"Unable to open output file newxml.xml"<<endl;
+    return;
+  }
+  TFile* rootfile = new TFile(file.c_str(),"read");
+  TList* list = (TList*)rootfile->Get( (taggerName+"/"+dir+"/"+taggerName+"Calib") )->Clone();
+  rootfile->Close();
+  for(int i=0; i<list->GetSize(); ++i){
+    TObjString* ss = (TObjString*)list->At(i);
+    ofile<<ss->String()<< endl;
+  }
+  ofile.close();
+}
+
+void MV2family(TString jetCollectionName="AntiKt4EMTopo") {
+  xml2Root("MV2m.xml"   , "MV2m"   , jetCollectionName );
+  xml2Root("MV2c00.xml" , "MV2c00" , jetCollectionName );
+  xml2Root("MV2c10.xml" , "MV2c10" , jetCollectionName );
+  xml2Root("MV2c20.xml" , "MV2c20" , jetCollectionName );
+  xml2Root("MV2c100.xml", "MV2c100", jetCollectionName );
+}
+
+void convertXml2ROOT(TString filename) {
+  cout<<"Compiling macros... "<<endl;
+  gROOT->ProcessLine(".L ../egammaBDT/Node.cxx+");
+  gROOT->ProcessLine(".L ../egammaBDT/BDT.cxx+");
+  gROOT->ProcessLine(".L ../convertXml2ROOT.C+");
+  cout<<"USAGE: "<<endl;
+  cout<<"\t"<<"xml2Root(\"xmlfilename.xml\",\"taggername\",\"jetcollectionname\")"<<endl;
+
+  cout << filename << endl;
+  if (filename != "NONE") {
+      xml2Root(filename, "MV2c00");
+      xml2Root(filename, "MV2c10");
+      xml2Root(filename, "MV2c20");
+  }
+}

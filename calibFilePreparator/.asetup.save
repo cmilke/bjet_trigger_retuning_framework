@@ -1,0 +1,86 @@
+#Release cmake
+
+export AtlasSetup="/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/AtlasSetup/V01-00-28/AtlasSetup"
+export AtlasSetupVersion="AtlasSetup-01-00-28"
+export LANG="C"
+export LC_ALL="C"
+export BINARY_TAG="x86_64-slc6-gcc49-opt"
+export CMTCONFIG="x86_64-slc6-gcc49-opt"
+if [ -n "${MAKEFLAGS:+x}" ]; then
+    asetup_flags=`echo ${MAKEFLAGS} | \grep ' -l'`
+    if [ -z "${asetup_flags}" ]; then
+        export MAKEFLAGS="${MAKEFLAGS} -l28"
+    fi
+else
+    export MAKEFLAGS="-j28 -l28"
+fi
+if [ -n "${PATH:+x}" ]; then
+    export PATH=""/cvmfs/atlas.cern.ch/repo/sw/software/21.0/sw/lcg/releases/gcc/4.9.3/x86_64-slc6/bin:${PATH}""
+else
+    export PATH="/cvmfs/atlas.cern.ch/repo/sw/software/21.0/sw/lcg/releases/gcc/4.9.3/x86_64-slc6/bin"
+fi
+if [ -n "${LD_LIBRARY_PATH:+x}" ]; then
+    export LD_LIBRARY_PATH=""/cvmfs/atlas.cern.ch/repo/sw/software/21.0/sw/lcg/releases/gcc/4.9.3/x86_64-slc6/lib64:${LD_LIBRARY_PATH}""
+else
+    export LD_LIBRARY_PATH="/cvmfs/atlas.cern.ch/repo/sw/software/21.0/sw/lcg/releases/gcc/4.9.3/x86_64-slc6/lib64"
+fi
+export CC=`which --skip-alias gcc 2>/dev/null`
+[[ -z $CC ]] && unset CC
+export CXX=`which --skip-alias g++ 2>/dev/null`
+[[ -z $CXX ]] && unset CXX
+export FC=`which --skip-alias gfortran 2>/dev/null`
+[[ -z $FC ]] && unset FC
+export CMAKE_NO_VERBOSE="1"
+type lsetup >/dev/null 2>/dev/null
+if [ $? -ne 0 ]; then
+   source ${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh --quiet
+fi
+source $ATLAS_LOCAL_ROOT_BASE/packageSetups/localSetup.sh --quiet cmake
+export FRONTIER_LOG_LEVEL="warning"
+export ATLAS_POOLCOND_PATH="/cvmfs/atlas-condb.cern.ch/repo/conditions"
+export ATLAS_DB_AREA="/cvmfs/atlas.cern.ch/repo/sw/database"
+export DBRELEASE_OVERRIDE="current"
+export SITEROOT="/cvmfs/atlas.cern.ch/repo/sw/software/21.0"
+export AtlasBaseDir="/cvmfs/atlas.cern.ch/repo/sw/software/21.0"
+export LCG_RELEASE_BASE="/cvmfs/atlas.cern.ch/repo/sw/software/21.0/sw/lcg/releases"
+export AtlasBuildStamp="2017-01-18 21:44"
+export AtlasReleaseType="stable"
+export AtlasBuildBranch="21.0"
+export AtlasProject="AtlasProduction"
+export TDAQ_RELEASE_BASE="/cvmfs/atlas.cern.ch/repo/sw/software/21.0"
+export ATLAS_RELEASE_BASE="/cvmfs/atlas.cern.ch/repo/sw/software/21.0"
+export ATLAS_RELEASEDATA="/cvmfs/atlas.cern.ch/repo/sw/software/21.0/atlas/offline/ReleaseData"
+export AtlasArea="/cvmfs/atlas.cern.ch/repo/sw/software/21.0/AtlasProduction/21.0.13.1"
+export G4PATH="/cvmfs/atlas.cern.ch/repo/sw/software/21.0/Geant4"
+export AtlasVersion="21.0.13.1"
+source /cvmfs/atlas.cern.ch/repo/sw/software/21.0/AtlasOffline/21.0.13/InstallArea/x86_64-slc6-gcc49-opt/setup.sh
+asetup_status=$?
+if [ ${asetup_status} -ne 0 ]; then
+    \echo "AtlasSetup(ERROR): sourcing release setup script (/cvmfs/atlas.cern.ch/repo/sw/software/21.0/AtlasOffline/21.0.13/InstallArea/x86_64-slc6-gcc49-opt/setup.sh) failed"
+fi
+source /cvmfs/atlas.cern.ch/repo/sw/software/21.0/AtlasProduction/21.0.13.1/InstallArea/x86_64-slc6-gcc49-opt/setup.sh
+asetup_status=$?
+if [ ${asetup_status} -ne 0 ]; then
+    \echo "AtlasSetup(ERROR): sourcing release setup script (/cvmfs/atlas.cern.ch/repo/sw/software/21.0/AtlasProduction/21.0.13.1/InstallArea/x86_64-slc6-gcc49-opt/setup.sh) failed"
+fi
+if [ ! -z $ATLAS_LOCAL_ROOT_BASE ]; then
+    emacs -Q --batch >/dev/null 2>&1
+    emacs_status=$?
+    if [ ${emacs_status} -ne 0 ]; then
+        export PATH="$ATLAS_LOCAL_ROOT_BASE/wrappers/linuxApp:$PATH"
+    fi
+fi
+
+#Release Summary as follows:
+#Release base=/cvmfs/atlas.cern.ch/repo/sw/software/21.0
+#Release project=AtlasProduction
+#Release releaseNum=21.0.13.1
+#Release asconfig=x86_64-slc6-gcc49-opt
+
+# Execute user-specified epilog
+
+source /cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/swConfig/asetup/asetupEpilog.sh
+script_status=$?
+if [ ${script_status} -ne 0 ]; then
+    \echo "AtlasSetup(ERROR): User-specified epilog (source /cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/swConfig/asetup/asetupEpilog.sh) reported failure (error ${script_status})"
+fi

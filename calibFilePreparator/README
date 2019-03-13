@@ -1,0 +1,51 @@
+A set of macros to handle/prepare calibration file(s).
+This package also contains the converter of TMVA xml file into TList/TTree.
+The TTree dumping is based on the new BDT method which is developed
+in the egamma group. Because of this, it requires athena environment.
+
+CAUTION:
+	The calibration file has to contain the same jet collections for all
+	the taggers inside. If this is not the case, the athena crashes
+	while running.
+
+0. Checkout the package like below.
+   # svn co svn+ssh://svn.cern.ch/reps/atlas-mociduki/btag/calibFilePreparator/trunk calibFilePreparator
+   # cd calibFilePreparator
+   # . setup.sh
+
+1. There are two main macros.
+   1.1: calibMod.C
+      This is to modify the calibration file into whatever the shape you wish.
+      The basic procedure looks like below.
+      1. First copy the calibration file which will be the base of
+         the calibration file that you're going to make.
+	 All the past calibration files can be found here.
+	 /afs/cern.ch/atlas/groups/perf-flavtag/ReferenceHistograms/
+      2. If you want to remove some taggers/jet-collections,
+         delete them using functions in calibMod.C
+	 # root calibMod.C+
+	 This command above will show the usage.
+	 It's also possible to copy the jet collection which already
+	 exists in the original calibration file into some other jet-collection.
+	 But note that the copied jet-collection will be also removed
+	 when the original jet-collection is deleted because
+	 ROOT creates only the link to the original jet-collection.
+	 So, if you'd like to only change the name of the jet-collection,
+	 you have to copy the jet-collection to some other ouput file
+	 than the original file. But this method hasn't yet been inplemented.
+	 If you just have to modify/remove the taggers/jet-collections,
+	 this is all and the rest steps are not necessary.
+      3. If you'd like to add some new tagger or jet-collection,
+         prepare some new file(s) containing thoes new ones
+	 but these informations have to be stored 
+	 in the same structures (the sub-directories) as the other taggers.
+      4. Finally, hadd two/several files. Done.
+
+   1.2: convertXml2ROOT.C
+   	This is to create a root file containing TList/TTree which is converted
+	from xml file. The method creates TTree is only supported
+	for Gradient BDT.
+	# root convertXmlToTTree.C+
+	This will show the usage.
+	The output file is already structured in the shape of calibration file,
+	so that you have to just hadd these files.
