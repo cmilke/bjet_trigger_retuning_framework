@@ -1,0 +1,68 @@
+twiki: https://twiki.cern.ch/twiki/bin/view/Atlas/BTriggerTuning
+-- step 1 (as in the twiki):
+	run testBTriggerTuning.py with "RETAG = False"
+
+-- step 1.1 (still in step 1) create a local calibration tag:
+	- https://svnweb.cern.ch/trac/atlas-mociduki/browser/btag/calibFilePreparator/trunk/README
+	- update setup.sh, if needed
+	- instructions from Ruchi:
+
+		>> hadd RefFileWithAllTaggers.root SomeFileWithMissingTaggers.root  RefFileFromStep1.root
+		>> file="RefFileWithAllTaggers.root"
+		>> suffix="WhateverYouWant"
+		>> coolHist_setFileIdentifier.sh $file
+		>> coolHist_insertFileToCatalog.py  $file
+		>> coolHist_setReference.py OFLP200 /GLOBAL/TrigBTagCalib/RUN12 1 $suffix $file 
+		>> AtlCoolConsole.py "sqlite://;schema=mycool.db;dbname=OFLP200" 
+		>> (from inside the python shell) setchan /GLOBAL/TrigBTagCalib/RUN12 1 RUN12
+
+	the above should create a mycool.db file which contains the new tuning.
+	It would be good to have a standard or a convention for file names and suffixes:
+	 + suffix: <date>_<step>
+	 + root file: RefFile_<date>_<step>.root
+	 + <step> corresponding to the step in this list, <date> in the format of YYYYMMDD, a/b/c/... for several iterations (or with other additional strings)
+	Files mycool.db and RefFileWithAllTaggers.root should be copied in the tuning directory
+
+-- step 2 (as in the twiki):
+	rerun testBTriggerTuning.py with "RETAG = True" and "LocalCalibSuffix" set equal to the $suffix used above
+	The flavntuple.root obtained now will be used in step 3
+
+-- step 3:
+	- tune MV2: https://svnweb.cern.ch/trac/atlas-mociduki/browser/btag/trainingMV2/trunk/README
+	  (probably better to do this in a clean shell since a different setup is needed to deal with TMVA)
+		check if the proper weight file is there
+
+	  >> python run.py <weight file> <input dir> <jet algorithm>
+
+		the weights/<same weight as before>.weights.xml file should be used in the next step
+	
+	- go back to calibFilePreparator
+
+		>> root -l convertXml2ROOT.C+
+		>> xml2Root("<the weight xml file produced in the previous step>", \"MV2c00\")
+		>> xml2Root("<the weight xml file produced in the previous step>", \"MV2c10\")
+		>> xml2Root("<the weight xml file produced in the previous step>", \"MV2c20\")
+		
+		(in the above MV2C00 and MV2C20 are produced only because all the taggers are needed)
+		the above lines produce three root files, one for each tagger.
+
+		>> hadd <the three files produced above> <file with the other taggers>
+		the "other" file can be found here: /afs/cern.ch/user/r/ruchi/public/BTagCalibRUN2Onl-08-05_2.root
+	
+	- produce a new calibration tag out of this new file (i.e. redo step 1.1)
+
+-- step 4: rerun testBJetTriggerTuning.py using the calibration tag produced in step 3:
+	 "RETAG = True" and "LocalCalibSuffix" equal to the $suffix used in step 3
+
+** to run with the real ATLAS DB configuration, replace these lines:
+
+if RETAG & (LocalCalibSuffix!='WHATEVER') :
+    BTaggingFlags.CalibrationFromLocalReplica = True
+    BTaggingFlags.TrigCalibrationFolderRoot = '/GLOBAL/TrigBTagCalib/'
+    BTaggingFlags.TrigCalibrationTag = LocalCalibSuffix
+
+with these ones:
+ 
+if RETAG:
+    BTaggingFlags.TrigCalibrationFolderRoot = '/GLOBAL/TrigBTagCalib/'
+    BTaggingFlags.TrigCalibrationTag = 'TrigBTagCalibRUN12-08-12'
