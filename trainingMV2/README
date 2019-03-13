@@ -1,0 +1,110 @@
+A set of macros to train MV2 tagger(s)
+
+1. Checkout the package like below.
+   # svn co svn+ssh://svn.cern.ch/reps/atlas-mociduki/btag/trainingMV2/trunk trainingMV2
+   # cd trainingMV2
+   # . setup.sh
+
+2. Compilation.
+   This will first compile the codes and then try to run it,
+   but after the compilation, it will fail due to the missing arguments.
+   # python run.py
+
+3. Run.
+   To actually run the code, you need to give 3 or at least 2 arguments
+   to the python script. There's an example shell script doing this.
+   # . example.sh
+   The actual run command to run looks like below,
+   eitherway it works, but the varlist file should be in weights/
+   #python run.py weights/TRAINCONFIG.varlist INPUTDIR
+   #python run.py TRAINCONFIG INPUTDIR
+
+4. Arguments.
+   You need a varilst file and a directory which holds the files
+   to run the training.
+4.1 varlist file
+    This file should contain a list of input variables
+    and should be located under the "weights/" directory.
+    Those variables must be declared in "minibtag.h".
+    They should be listed together with the variable types.
+    The types can be "I/F/D", which stands for Int, Float, and Double.
+    The training option is passed with this varlist file name,
+    so this file name is important.
+    The example file in the weights directory looks like below,
+    "MV2_example_jvt02_puCut3_tm0_stat10k_cStat5k_BdtGrad_bin_cuts200_depth10_nTrees400_MNS05_c10.varlist"
+    The order of the option statement is not important except the last one
+    for the charm background fraction.
+
+    First, the general training options,
+    - "MV2_example": Just a name, doesn't mean anything.
+      		   : It can be anything but cannot be very long because there
+		   : is a limitation of the file name length. Up to 255 chars.
+    - "jvt02"      : jvt cut will be applied like JVT>0.2 but with the condition
+      	       	   : defined in the following item. It can be also "jvf"
+		   : but not both at the same time.
+    - "puCut3"	   : Pile up cut (jvf/jvt) will be applied like following
+      		   : 0. Not applying at all
+		   : 1. JetEtMiss recommendation, applying only for pt<50 GeV
+		   : and abs(eta)<2.4
+		   : 2. Applying the cut without asking eta but only pt<50 GeV
+		   : 3. Applying the cut for all jets without asking pt/eta
+    - "tm0"	   : Application of truth matching, 0 or 1 is allowed.
+    - "mix1"       : Switch for split mode for train/test.
+                   : eventNumber%2==0(1) for train(test).
+    - "maxStat1"   : Force using half of full statistics for training.
+                   : If this is set, the following 2 statistics related
+		   : options are ignored.
+    - "stat10k"	   : Statistics used for the training for b/u flavors
+    - "cStat5k"	   : Statistics used for the training for c flavor
+    - "bin"	   : Binary classification option (signal vs background).
+      		   : If this option is not given, multiclassification is
+		   : trained, like MV2m between b, u, and c.
+		   : In multiclassification mode gradient boost is
+		   : automatically set since Ada boost isn't avaibale.
+    - weight type  : To configure the weighting type for pt/eta to make
+                   : the same sig/bkg pt or pt/eta distribution,
+                   : four options are available.
+		   : 1. Ratio weighting such that b/c flavors are reweighted
+		   :    to the light flavor pt/eta. This is default option.
+		   :    To specify, add "_r_" or "_rPtEta_" in the input string.
+		   : 2. Ratio weighting such that b/c flavors are reweighted
+		   :    to the light flavor pt without concerning eta.
+		   :    To configure, add "_rPt_" in the input string.
+		   : 3. Flattening weights such that all flavors are reweighted
+		   :    to the flat pt/eta 2D distribution.
+		   :    To configure, add "_f_" or "_fPtEta_" in the input string.
+		   : 4. Flattening weights such that all flavors are reweighted
+		   :    to the flat pt 1D distribution, without concerning eta.
+		   :    To configure, add "_fPt_" in the input string.
+    - "_0tr_"      : If you put this string in the option, the training won't
+                   : be performed. Hence, only the transformation from event
+                   : level ntuple to jet level ntuple is done.
+
+    Second, the BDT specific training options,
+    - "BdtGrad"	   : Use gradient boost algorithm if this option is not given,
+      		   : it will use Ada boost algorithm.
+    - "cuts"	   : Number of cut intervals are 200 when optimizing cuts
+      		   : in the training.
+    - "depth"	   : Maximum number of depth of a tree
+    - "nTrees400"  : Number of decision trees are 400 in the forest.
+    - "MNS05"	   : Minimum Node Size, given in percentage of the whole
+      		   : training statistics. It means 0.5% will be set.
+    - "c"	   : Charm background fraction used in the training in percent.
+      		   : NB; this should ALWAYS come at the last.
+4.2 input directory
+    The second argument should be the directory which holds the root files used
+    in the training.
+    In the directory named DIR, files compatible with this name "DIR/*.root*"
+    will be fed to the TChain.
+    The codes are compatible to both structure of these 2 ntuple types.
+    - https://svnweb.cern.ch/trac/atlasperf/browser/CombPerf/FlavorTag/FlavourTagPerformanceFramework
+    - https://svnweb.cern.ch/trac/atlasperf/browser/CombPerf/FlavorTag/FlavourTagAdvancedPerformanceFramework
+4.3 Jet collection
+    Optional. If you don't give this argument, the default would be "AntiKt4EMTopoJets".
+    It should be either of "AntiKt4EMTopoJets" or "AntiKt4EMTopoJets".
+
+Actual examples of MV2 trainings
+# ln -s $PWD/MV2_example.varlist weights/MV2_jvf05_puCut3_tm0_stat100k_cStat50k_BdtGrad_bin_cuts200_depth10_nTrees400_MNS05_c00.varlist #MV2c00
+# ln -s $PWD/MV2_example.varlist weights/MV2_jvf05_puCut3_tm0_stat100k_cStat50k_BdtGrad_bin_cuts200_depth10_nTrees400_MNS05_c10.varlist #MV2c10
+# ln -s $PWD/MV2_example.varlist weights/MV2_jvf05_puCut3_tm0_stat100k_cStat50k_BdtGrad_bin_cuts200_depth10_nTrees400_MNS05_c20.varlist #MV2c20
+# ln -s $PWD/MV2_example.varlist weights/MV2_jvf05_puCut3_tm0_stat100k_cStat50k_cuts200_depth10_nTrees400_MNS05_c20.varlist		#MV2m

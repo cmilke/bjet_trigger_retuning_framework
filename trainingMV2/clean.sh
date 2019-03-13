@@ -1,0 +1,11 @@
+rm -f ./*_C_ACLiC_dict_rdict.pcm
+rm -f ./*_C.d
+rm -f ./*_C.so
+rm -f */*_C_ACLiC_dict_rdict.pcm
+rm -f */*_C.d
+rm -f */*_C.so
+rm -f tmvaglob.h
+rm -f TMVAMulticlass.C
+rm -f TMVAMultiClassGui.h
+rm -f TMVAGui.h
+rm -f TMVAClassification.C

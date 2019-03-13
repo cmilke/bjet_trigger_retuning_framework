@@ -1,0 +1,17 @@
+#tagger,color,		style,	displayname
+#mv1,	kBlack,		1,	0
+#mv1c,	kGray+1,	1,	0
+#jfc,	kOrange+1,	1,	0
+#ip2,	kMagenta,	1,	0
+#ip3,	kMagenta,	1,	0
+#sv0,	kMagenta,	1,	0
+#sv1,	kMagenta,	1,	0
+#sv2,	kMagenta,	1,	0
+#jft,	kMagenta,	1,	0
+mv2c00,kRed,		1,	0
+mv2c10,kGreen,		1,	0
+mv2c20,kBlue,		1,	0
+#mv2c00,kBlack,		1,	0
+#mv2c10,kBlack,		1,	0
+#mv2c20,kBlack,		1,	0
+MVX,	kOrange,	1,	0

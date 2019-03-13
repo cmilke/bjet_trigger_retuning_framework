@@ -1,0 +1,1 @@
+/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/root/6.04.02-x86_64-slc6-gcc48-opt/tutorials/tmva/TMVAMulticlass.C

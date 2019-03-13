@@ -1,0 +1,2 @@
+nohup python run.py MV2_example_jvt02_puCut3_tm0_stat10k_cStat5k_BdtGrad_bin_cuts200_depth10_nTrees400_MNS05_c10 user.vdao.mc15_13TeV.410000.PowhegPythiaEvtGen_nonallhad.merge.AOD.e3698_s2608_s2183_r6630_r6264.BTAGNTUP_OrigV2_BTAGSTREAM >& example.log &
+tail -f example.log

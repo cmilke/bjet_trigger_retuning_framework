@@ -1,0 +1,16 @@
+#ip2,		IP2D
+#ip3,		IP3D
+#sv1,		SV1
+#cmb,		IP3D+SV1
+#sv0,		SV0
+#jft,		JetFitter
+#jfc,		IP3D+JetFitter
+#sv2,		SV2
+#smt,		SoftMuonTag
+#mv1,		MV1
+#mv1c,		MV1c
+mv2c00,	MV2c00
+mv2c10,	MV2c10
+mv2c20,	MV2c20
+mv2m,		MV2m
+MVX,		MVX
