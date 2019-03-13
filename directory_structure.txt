@@ -1,1 +1,326 @@
-tmp
+workingdir
+├── analysis
+│   ├── btag_c10_score_comparison
+│   │   ├── generate_plots.cxx
+│   │   ├── plot
+│   │   ├── print_discriminants.cxx
+│   │   ├── record_discriminants.cxx
+│   │   └── roc_curves.cxx
+│   ├── pt_study
+│   │   ├── generate_plots.cxx
+│   ├── setup.sh
+│   ├── util
+│   │   ├── athena_flags
+│   │   ├── athena_libs
+│   │   ├── print_info.cxx
+│   │   ├── titles.hh
+│   │   └── tmp.log
+│   └── vertex_comparison
+│       ├── Makefile
+│       ├── plot_vertices
+│       └── plot_vertices.cxx
+├── autorun
+│   ├── full_retune
+│   ├── retune_step1.1.sh
+│   ├── retune_step1.2.sh
+│   ├── retune_step2.sh
+│   ├── retune_step3.1.sh
+│   ├── retune_step3.2.sh
+│   ├── retune_step4.sh
+│   ├── run_analysis_array.sh
+│   └── tunes
+│       ├── 20190228_hybrid_ttbar_41000_Zprime_427080_med.sh
+├── BJetTriggerUtils
+│   ├── calibJson
+│   │   ├── 20190308_ttbar_41000_med_step1.json
+│   │   ├── 20190308_ttbar_41000_med_step2.json
+│   │   ├── 20190308_ttbar_41000_med_step4.json
+│   │   └── template_step1.json
+│   ├── createRefFile.py
+│   ├── findFailedJobs.py
+│   ├── findFailedJobs.sh
+│   ├── Instructions
+│   ├── mergeFiles.py
+│   ├── mixOnlineTrees.py
+│   ├── NtupConverter.C
+│   ├── NtupConverter.h
+│   ├── prepare_grid_job.py
+│   ├── prepare_slurm_array.py
+│   ├── README.md
+│   ├── setup.py
+│   ├── slurm_array_template.py
+│   ├── submitSlurm.py
+│   ├── Submitslurm.sh
+│   ├── submit_slurm_training.py
+│   ├── testBTriggerTuning_default.py
+│   ├── testBTriggerTuning_ftk.py
+│   ├── testBTriggerTuning_grid.py
+│   ├── testBTriggerTuning_manual.py
+│   ├── testBTriggerTuning_old_tune.py
+│   ├── testBTriggerTuning_template.py
+├── calibFilePreparator
+│   ├── 20190308_ttbar_41000_med_step1
+│   │   ├── coolhist_guid.tmp
+│   │   ├── coolhist_tempcat.xml
+│   │   ├── coolhist_tempcat.xml.BAK
+│   │   ├── filesToHadd.txt
+│   │   ├── mycool.db
+│   │   ├── PoolFileCatalog.xml
+│   │   ├── RefFile_20190308_ttbar_41000_med_step1.root
+│   │   └── ttbar_41000_med_RefHistos.root
+│   ├── 20190308_ttbar_41000_med_step3
+│   │   ├── coolhist_guid.tmp
+│   │   ├── coolhist_tempcat.xml
+│   │   ├── coolhist_tempcat.xml.BAK
+│   │   ├── filesToHadd.txt
+│   │   ├── MV2c00_AntiKt4EMTopo.root
+│   │   ├── MV2c10_AntiKt4EMTopo.root
+│   │   ├── MV2c20_AntiKt4EMTopo.root
+│   │   ├── mycool.db
+│   │   ├── PoolFileCatalog.xml
+│   │   └── RefFile_20190308_ttbar_41000_med_step3.root
+│   ├── BTagCalibRUN2Onl-08-05_2.root
+│   ├── calibMod.C
+│   ├── convertXml2ROOT.C
+│   ├── convertXml2ROOT_C_ACLiC_dict_rdict.pcm
+│   ├── convertXml2ROOT_C.d
+│   ├── convertXml2ROOT_C.so
+│   ├── coolScript.sh
+│   ├── createRefFile.py -> /users/cmilke/qualification/bJetTrigger/BJetTriggerUtils/createRefFile.py
+│   ├── egammaBDT
+│   │   ├── BDT.cxx
+│   │   ├── BDT_cxx_ACLiC_dict_rdict.pcm
+│   │   ├── BDT_cxx.d
+│   │   ├── BDT_cxx.so
+│   │   ├── BDT.h
+│   │   ├── Node.cxx
+│   │   ├── Node_cxx_ACLiC_dict_rdict.pcm
+│   │   ├── Node_cxx.d
+│   │   ├── Node_cxx.so
+│   │   └── Node.h
+│   ├── MV2_example_jvt02_puCut3_tm0_stat10k_cStat5k_BdtGrad_bin_cuts200_depth10_nTrees400_MNS05_c10_BDTG.weights.xml_MV2c00_ALL.root
+│   ├── README
+│   ├── setup.sh
+├── directory_structure.txt
+├── plots
+├── trainingMV2
+│   ├── 20190308_ttbar_41000_med_run.sh
+│   ├── btagRejGraphs.C
+│   ├── btagRejGraphs_C_ACLiC_dict_rdict.pcm
+│   ├── btagRejGraphs_C.d
+│   ├── btagRejGraphs_C.so
+│   ├── clean.sh
+│   ├── example.sh
+│   ├── inputs -> /users/cmilke/scratch/authorship/training_inputs
+│   │   └── 20190308_ttbar_41000_med
+│   │       └── ttbar_41000_med_flavntuple.root
+│   ├── MulticlassTrainer.C
+│   ├── MulticlassTrainer_C_ACLiC_dict_rdict.pcm
+│   ├── MulticlassTrainer_C.d
+│   ├── MulticlassTrainer_C.so
+│   ├── MV2_example.varlist
+│   ├── ntupInfo
+│   │   ├── bTag.C
+│   │   ├── bTagG.C
+│   │   ├── bTagG.h
+│   │   ├── bTag.h
+│   │   ├── bTag.h__backup
+│   │   ├── minibtag.C
+│   │   └── minibtag.h
+│   ├── plot.C
+│   ├── plots
+│   ├── README
+│   ├── run.py
+│   ├── run.sh
+│   ├── setup.sh
+│   ├── slurm-4722383.out
+│   ├── submit_slurm_training.py -> /users/cmilke/qualification/bJetTrigger/BJetTriggerUtils/submit_slurm_training.py
+│   ├── taggers2draw.list
+│   ├── taggers2eval.list
+│   ├── TMVAClassification.C -> /cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/root/6.04.02-x86_64-slc6-gcc48-opt/tutorials/tmva/TMVAClassification.C
+│   ├── TMVAClassification_C_ACLiC_dict_rdict.pcm
+│   ├── TMVAClassification_C.d
+│   ├── TMVAClassification_C.so
+│   ├── tmvaglob.h -> /cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/root/6.04.02-x86_64-slc6-gcc48-opt/include/TMVA/tmvaglob.h
+│   ├── TMVAGui.h -> /cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/root/6.04.02-x86_64-slc6-gcc48-opt/include/TMVA/TMVAGui.h
+│   ├── TMVAMulticlass.C -> /cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/root/6.04.02-x86_64-slc6-gcc48-opt/tutorials/tmva/TMVAMulticlass.C
+│   ├── TMVAMultiClassGui.h -> /cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/root/6.04.02-x86_64-slc6-gcc48-opt/include/TMVA/TMVAMultiClassGui.h
+│   ├── tools
+│   │   ├── RejectionTool.C
+│   │   ├── RejectionTool_C_ACLiC_dict_rdict.pcm
+│   │   ├── RejectionTool_C.d
+│   │   ├── RejectionTool_C.so
+│   │   ├── RejectionTool.h
+│   │   └── variable.h
+│   ├── weights
+│   │   ├── MV2_example_jvt02_puCut3_tm0_stat10k_cStat5k_BdtGrad_bin_cuts200_depth10_nTrees400_MNS05_c10.varlist -> /users/cmilke/qualification/bJetTrigger/trainingMV2/MV2_example.varlist
+│   │   ├── MV2_gsc35_20190308_ttbar_41000_med_puCut0_tm0_stat1200k_cStat600k_BdtGrad_bin_cuts200_depth30_nTrees1000_MNS005_c07_BDTG.class.C
+│   │   ├── MV2_gsc35_20190308_ttbar_41000_med_puCut0_tm0_stat1200k_cStat600k_BdtGrad_bin_cuts200_depth30_nTrees1000_MNS005_c07_BDTG.weights.xml
+│   │   ├── MV2_gsc35_20190308_ttbar_41000_med_puCut0_tm0_stat1200k_cStat600k_BdtGrad_bin_cuts200_depth30_nTrees1000_MNS005_c07.graphs.root
+│   │   ├── MV2_gsc35_20190308_ttbar_41000_med_puCut0_tm0_stat1200k_cStat600k_BdtGrad_bin_cuts200_depth30_nTrees1000_MNS005_c07.hists.root
+│   │   ├── MV2_gsc35_20190308_ttbar_41000_med_puCut0_tm0_stat1200k_cStat600k_BdtGrad_bin_cuts200_depth30_nTrees1000_MNS005_c07.root
+│   │   ├── MV2_gsc35_20190308_ttbar_41000_med_puCut0_tm0_stat1200k_cStat600k_BdtGrad_bin_cuts200_depth30_nTrees1000_MNS005_c07.varlist
+│   │   └── MV2_gsc35_FLo_20180522_puCut0_tm0_stat1200k_cStat600k_BdtGrad_bin_cuts200_depth30_nTrees1000_MNS005_c07_HybridTune.varlist
+└── Tuning_rel21
+    ├── build
+    │   ├── atlas_build_run.sh
+    │   ├── atlas_export_sanitizer.cmake
+    │   ├── CMakeCache.txt
+    │   ├── CMakeDoxyfile.in
+    │   ├── CMakeDoxygenDefaults.cmake
+    │   ├── CMakeFiles
+    │   │   ├── 3.11.0
+    │   │   ├── cmake.check_cache
+    │   │   ├── CMakeDirectoryInformation.cmake
+    │   │   ├── CMakeError.log
+    │   │   ├── CMakeOutput.log
+    │   │   ├── CMakeRuleHashes.txt
+    │   │   ├── CMakeTmp
+    │   │   ├── ContinuousBuild.dir
+    │   │   ├── ContinuousConfigure.dir
+    │   │   ├── ContinuousCoverage.dir
+    │   │   ├── Continuous.dir
+    │   │   ├── ContinuousMemCheck.dir
+    │   │   ├── ContinuousStart.dir
+    │   │   ├── ContinuousSubmit.dir
+    │   │   ├── ContinuousTest.dir
+    │   │   ├── ContinuousUpdate.dir
+    │   │   ├── doc.dir
+    │   │   ├── ExperimentalBuild.dir
+    │   │   ├── ExperimentalConfigure.dir
+    │   │   ├── ExperimentalCoverage.dir
+    │   │   ├── Experimental.dir
+    │   │   ├── ExperimentalMemCheck.dir
+    │   │   ├── ExperimentalStart.dir
+    │   │   ├── ExperimentalSubmit.dir
+    │   │   ├── ExperimentalTest.dir
+    │   │   ├── ExperimentalUpdate.dir
+    │   │   ├── Export
+    │   │   ├── feature_tests.bin
+    │   │   ├── feature_tests.c
+    │   │   ├── feature_tests.cxx
+    │   │   ├── Makefile2
+    │   │   ├── Makefile.cmake
+    │   │   ├── NightlyBuild.dir
+    │   │   ├── NightlyConfigure.dir
+    │   │   ├── NightlyCoverage.dir
+    │   │   ├── Nightly.dir
+    │   │   ├── NightlyMemCheck.dir
+    │   │   ├── NightlyMemoryCheck.dir
+    │   │   ├── NightlyStart.dir
+    │   │   ├── NightlySubmit.dir
+    │   │   ├── NightlyTest.dir
+    │   │   ├── NightlyUpdate.dir
+    │   │   ├── progress.marks
+    │   │   ├── TargetDirectories.txt
+    │   │   ├── WorkDirClidMerge.dir
+    │   │   ├── WorkDirComponentsMerge.dir
+    │   │   └── WorkDirConfdbMerge.dir
+    │   ├── cmake_install.cmake
+    │   ├── CPackConfig.cmake
+    │   ├── cpack_install.sh
+    │   ├── CPackOptions.cmake
+    │   ├── CPackSourceConfig.cmake
+    │   ├── CTestCustom.cmake
+    │   ├── CTestTestfile.cmake
+    │   ├── DartConfiguration.tcl
+    │   ├── Doxyfile
+    │   ├── ExperimentalBuild.cmake
+    │   ├── Makefile
+    │   ├── NightlyBuild.cmake
+    │   ├── Project.xml
+    │   ├── README.txt
+    │   ├── setup.sh
+    │   ├── Testing
+    │   │   └── Temporary
+    │   ├── TrigBtagAnalysis
+    │   │   ├── CMakeFiles
+    │   │   ├── cmake_install.cmake
+    │   │   ├── CTestTestfile.cmake
+    │   │   ├── dummy_clid.db
+    │   │   ├── genConf
+    │   │   ├── Makefile
+    │   │   └── TrigBtagAnalysis_clid.db
+    │   ├── WorkDirConfig.cmake
+    │   ├── WorkDirConfig-version.cmake
+    │   └── x86_64-centos7-gcc49-opt
+    │       ├── ClientCMakeLists.txt
+    │       ├── compilers.txt
+    │       ├── env_setup.sh
+    │       ├── env_setup.sh.in
+    │       ├── include
+    │       ├── jobOptions
+    │       ├── lib
+    │       ├── packages.txt
+    │       ├── python
+    │       ├── ReleaseData
+    │       ├── setup_build.sh
+    │       ├── setup.csh
+    │       ├── setup.sh
+    │       └── share
+    ├── run -> /scratch/users/cmilke/authorship/run
+    │   ├── athfile-cache.ascii.gz
+    │   ├── calibJson -> /users/cmilke/qualification/bJetTrigger/BJetTriggerUtils/calibJson  [recursive, not followed]
+    │   ├── check_jobs.sh
+    │   ├── eventLoopHeartBeat.txt
+    │   ├── findFailedJobs.py -> /users/cmilke/qualification/bJetTrigger/BJetTriggerUtils/findFailedJobs.py
+    │   ├── findFailedJobs.sh -> /users/cmilke/qualification/bJetTrigger/BJetTriggerUtils/findFailedJobs.sh
+    │   ├── histo.root
+    │   ├── hostnamelookup.tmp
+    │   ├── manual_tests
+    │   │   ├── fail.log
+    │   │   ├── flavnutple01.root
+    │   │   └── reffile01.root
+    │   ├── mergeFiles.py -> /users/cmilke/qualification/bJetTrigger/BJetTriggerUtils/mergeFiles.py
+    │   ├── mixOnlineTrees.py -> /users/cmilke/qualification/bJetTrigger/BJetTriggerUtils/mixOnlineTrees.py
+    │   ├── ntuple_aodto.pmon.gz
+    │   ├── PoolFileCatalog.xml
+    │   ├── PoolFileCatalog.xml.BAK
+    │   ├── prepare_grid_job.py -> /users/cmilke/qualification/bJetTrigger/BJetTriggerUtils/prepare_grid_job.py
+    │   ├── prepare_slurm_array.py -> /users/cmilke/qualification/bJetTrigger/BJetTriggerUtils/prepare_slurm_array.py
+    │   ├── samples
+    │   │   ├── sample_ttbar_41000_500k_alt1.txt
+    │   │   ├── sample_ttbar_41000_500k_alt2.txt
+    │   │   ├── sample_ttbar_41000_500k_alt3.txt
+    │   │   ├── sample_ttbar_41000_500k.txt
+    │   │   ├── sample_ttbar_41000_full.txt
+    │   │   ├── sample_ttbar_41000_large_10pc.txt
+    │   │   ├── sample_ttbar_41000_large_90pc.txt
+    │   │   ├── sample_ttbar_41000_large_alt1.txt
+    │   │   ├── sample_ttbar_41000_med_alt1.txt
+    │   │   ├── sample_ttbar_41000_med_alt2.txt
+    │   │   ├── sample_ttbar_41000_med_alt3.txt
+    │   │   ├── sample_ttbar_41000_med.txt
+    │   │   ├── sample_ttbar_410470_med.txt
+    │   │   ├── sample_Zprime_427080_full.txt
+    │   │   ├── sample_Zprime_427080_large_10pc.txt
+    │   │   ├── sample_Zprime_427080_large_90pc.txt
+    │   │   ├── sample_Zprime_427080_med_alt1.txt
+    │   │   ├── sample_Zprime_427080_med_alt2.txt
+    │   │   ├── sample_Zprime_427080_med_alt3.txt
+    │   │   └── sample_Zprime_427080_med.txt
+    │   ├── setup.sh
+    │   ├── slurm_arrays
+    │   │   ├── slurm_20190212_ttbar_41000_full_official
+    │   │   ├── slurm_20190212_ttbar_41000_full_offline
+    │   │   ├── slurm_20190308_ttbar_41000_med_step1
+    │   │   ├── slurm_20190308_ttbar_41000_med_step2
+    │   │   └── slurm_20190308_ttbar_41000_med_step4
+    │   ├── slurm_array_template.py -> /users/cmilke/qualification/bJetTrigger/BJetTriggerUtils/slurm_array_template.py
+    │   ├── testBTriggerTuning_grid.py -> /users/cmilke/qualification/bJetTrigger/BJetTriggerUtils/testBTriggerTuning_grid.py
+    │   ├── testBTriggerTuning_manual.py -> /users/cmilke/qualification/bJetTrigger/BJetTriggerUtils/testBTriggerTuning_manual.py
+    │   ├── testBTriggerTuning_old_tune.py -> /users/cmilke/qualification/bJetTrigger/BJetTriggerUtils/testBTriggerTuning_old_tune.py
+    │   └── testBTriggerTuning_template.py -> /users/cmilke/qualification/bJetTrigger/BJetTriggerUtils/testBTriggerTuning_template.py
+    └── source
+        ├── CMakeLists.txt
+        └── TrigBtagAnalysis
+            ├── ChangeLog
+            ├── CMakeLists.txt
+            ├── doc
+            ├── README.md
+            ├── Root
+            ├── share
+            ├── SomeFilesForTuning
+            ├── src
+            ├── TrigBtagAnalysis
+            └── TuningInstructions.txt
