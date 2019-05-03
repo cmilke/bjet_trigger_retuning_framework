@@ -1,11 +1,11 @@
 #Release cmake
 
-export AtlasSetup="/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/AtlasSetup/V01-00-28/AtlasSetup"
-export AtlasSetupVersion="AtlasSetup-01-00-28"
+export AtlasSetup="/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/AtlasSetup/V01-00-30/AtlasSetup"
+export AtlasSetupVersion="AtlasSetup-01-00-30"
 export LANG="C"
 export LC_ALL="C"
-export BINARY_TAG="x86_64-slc6-gcc49-opt"
-export CMTCONFIG="x86_64-slc6-gcc49-opt"
+export BINARY_TAG="x86_64-slc6-gcc62-opt"
+export CMTCONFIG="x86_64-slc6-gcc62-opt"
 if [ -n "${MAKEFLAGS:+x}" ]; then
     asetup_flags=`echo ${MAKEFLAGS} | \grep ' -l'`
     if [ -z "${asetup_flags}" ]; then
@@ -14,16 +14,7 @@ if [ -n "${MAKEFLAGS:+x}" ]; then
 else
     export MAKEFLAGS="-j28 -l28"
 fi
-if [ -n "${PATH:+x}" ]; then
-    export PATH=""/cvmfs/atlas.cern.ch/repo/sw/software/21.0/sw/lcg/releases/gcc/4.9.3/x86_64-slc6/bin:${PATH}""
-else
-    export PATH="/cvmfs/atlas.cern.ch/repo/sw/software/21.0/sw/lcg/releases/gcc/4.9.3/x86_64-slc6/bin"
-fi
-if [ -n "${LD_LIBRARY_PATH:+x}" ]; then
-    export LD_LIBRARY_PATH=""/cvmfs/atlas.cern.ch/repo/sw/software/21.0/sw/lcg/releases/gcc/4.9.3/x86_64-slc6/lib64:${LD_LIBRARY_PATH}""
-else
-    export LD_LIBRARY_PATH="/cvmfs/atlas.cern.ch/repo/sw/software/21.0/sw/lcg/releases/gcc/4.9.3/x86_64-slc6/lib64"
-fi
+source /cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-2bc78/x86_64-slc6/setup.sh
 export CC=`which --skip-alias gcc 2>/dev/null`
 [[ -z $CC ]] && unset CC
 export CXX=`which --skip-alias g++ 2>/dev/null`
@@ -40,28 +31,24 @@ export FRONTIER_LOG_LEVEL="warning"
 export ATLAS_POOLCOND_PATH="/cvmfs/atlas-condb.cern.ch/repo/conditions"
 export ATLAS_DB_AREA="/cvmfs/atlas.cern.ch/repo/sw/database"
 export DBRELEASE_OVERRIDE="current"
-export SITEROOT="/cvmfs/atlas.cern.ch/repo/sw/software/21.0"
-export AtlasBaseDir="/cvmfs/atlas.cern.ch/repo/sw/software/21.0"
-export LCG_RELEASE_BASE="/cvmfs/atlas.cern.ch/repo/sw/software/21.0/sw/lcg/releases"
-export AtlasBuildStamp="2017-01-18 21:44"
+export GAUDI_ROOT="/cvmfs/atlas.cern.ch/repo/sw/software/21.1/GAUDI/21.1.55/InstallArea/x86_64-slc6-gcc62-opt"
+export SITEROOT="/cvmfs/atlas.cern.ch/repo/sw/software/21.1"
+export AtlasBaseDir="/cvmfs/atlas.cern.ch/repo/sw/software/21.1"
+export LCG_RELEASE_BASE="/cvmfs/atlas.cern.ch/repo/sw/software/21.1/sw/lcg/releases"
+export AtlasBuildStamp="2018-11-30T2139"
 export AtlasReleaseType="stable"
-export AtlasBuildBranch="21.0"
-export AtlasProject="AtlasProduction"
-export TDAQ_RELEASE_BASE="/cvmfs/atlas.cern.ch/repo/sw/software/21.0"
-export ATLAS_RELEASE_BASE="/cvmfs/atlas.cern.ch/repo/sw/software/21.0"
-export ATLAS_RELEASEDATA="/cvmfs/atlas.cern.ch/repo/sw/software/21.0/atlas/offline/ReleaseData"
-export AtlasArea="/cvmfs/atlas.cern.ch/repo/sw/software/21.0/AtlasProduction/21.0.13.1"
-export G4PATH="/cvmfs/atlas.cern.ch/repo/sw/software/21.0/Geant4"
-export AtlasVersion="21.0.13.1"
-source /cvmfs/atlas.cern.ch/repo/sw/software/21.0/AtlasOffline/21.0.13/InstallArea/x86_64-slc6-gcc49-opt/setup.sh
+export AtlasBuildBranch="21.1"
+export AtlasProject="AthenaP1"
+export TDAQ_RELEASE_BASE="/cvmfs/atlas.cern.ch/repo/sw/software/21.1"
+export ATLAS_RELEASE_BASE="/cvmfs/atlas.cern.ch/repo/sw/software/21.1"
+export ATLAS_RELEASEDATA="/cvmfs/atlas.cern.ch/repo/sw/software/21.1/atlas/offline/ReleaseData"
+export AtlasArea="/cvmfs/atlas.cern.ch/repo/sw/software/21.1/AthenaP1/21.1.55"
+export G4PATH="/cvmfs/atlas.cern.ch/repo/sw/software/21.1/Geant4"
+export AtlasVersion="21.1.55"
+source /cvmfs/atlas.cern.ch/repo/sw/software/21.1/AthenaP1/21.1.55/InstallArea/x86_64-slc6-gcc62-opt/setup.sh
 asetup_status=$?
 if [ ${asetup_status} -ne 0 ]; then
-    \echo "AtlasSetup(ERROR): sourcing release setup script (/cvmfs/atlas.cern.ch/repo/sw/software/21.0/AtlasOffline/21.0.13/InstallArea/x86_64-slc6-gcc49-opt/setup.sh) failed"
-fi
-source /cvmfs/atlas.cern.ch/repo/sw/software/21.0/AtlasProduction/21.0.13.1/InstallArea/x86_64-slc6-gcc49-opt/setup.sh
-asetup_status=$?
-if [ ${asetup_status} -ne 0 ]; then
-    \echo "AtlasSetup(ERROR): sourcing release setup script (/cvmfs/atlas.cern.ch/repo/sw/software/21.0/AtlasProduction/21.0.13.1/InstallArea/x86_64-slc6-gcc49-opt/setup.sh) failed"
+    \echo "AtlasSetup(ERROR): sourcing release setup script (/cvmfs/atlas.cern.ch/repo/sw/software/21.1/AthenaP1/21.1.55/InstallArea/x86_64-slc6-gcc62-opt/setup.sh) failed"
 fi
 if [ ! -z $ATLAS_LOCAL_ROOT_BASE ]; then
     emacs -Q --batch >/dev/null 2>&1
@@ -70,12 +57,13 @@ if [ ! -z $ATLAS_LOCAL_ROOT_BASE ]; then
         export PATH="$ATLAS_LOCAL_ROOT_BASE/wrappers/linuxApp:$PATH"
     fi
 fi
+export TestArea="/users/cmilke/qualification/bJetTrigger/calibFilePreparator"
 
 #Release Summary as follows:
-#Release base=/cvmfs/atlas.cern.ch/repo/sw/software/21.0
-#Release project=AtlasProduction
-#Release releaseNum=21.0.13.1
-#Release asconfig=x86_64-slc6-gcc49-opt
+#Release base=/cvmfs/atlas.cern.ch/repo/sw/software/21.1
+#Release project=AthenaP1
+#Release releaseNum=21.1.55
+#Release asconfig=x86_64-slc6-gcc62-opt
 
 # Execute user-specified epilog
 

@@ -1,13 +1,8 @@
 #!/bin/bash
-if [ $1 = 'all' ]; then
-    ./plot ttbar online
-    ./plot ttbar online_official_tune
-    ./plot ttbar offline
-    ./plot roc ttbar
-elif [ $1 = 'init' ]; then
-    root -l -b -q record_discriminants.cxx
-elif [ $1 = 'roc' ]; then
-    root -l -b -q "roc_curves.cxx(\"$2\")"
-else 
-    root -l -b -q "generate_plots.cxx(\"$1\", \"$2\")"
-fi
+case $1 in
+    'init') root -l -b -q "record_discriminants.cxx(\"$2\", \"$3\")";;
+    'hist') root -l -b -q "generate_plots.cxx(\"$2\", \"$3\", \"$4\")";;
+    'roc')  root -l -b -q "roc_curves.cxx(\"$2\")";;
+    *) echo 'Please provide a valid plot type';;
+esac
+ 

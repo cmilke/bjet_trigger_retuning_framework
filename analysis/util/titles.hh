@@ -5,7 +5,7 @@ string get_level_title(string level) {
     else if (level == "online")     {level_title = "Hybrid Retuned Online";}
     else if (level == "online_official_tune") {level_title = "Online Tune RUN12-08-14";}
     else if (level == "ftk")        {level_title = "FTK-Based Online";}
-    else                            {level_title = "OH DEAR!";}
+    else                            {level_title = "Uncatagorized";}
 
     return level_title;
 }

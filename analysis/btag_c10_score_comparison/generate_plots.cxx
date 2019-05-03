@@ -1,13 +1,12 @@
 #include "../util/titles.hh"
 
 
-void generate_plots(string event, string level) {
-    string level_title = get_level_title(level);
+void generate_plots(string event, string label, string title_prefix) {
     string event_title = get_event_title(event);
 
-    TFile bjet_file( ("mv2c10_"+event+"_"+level+"_bjet_discriminants.root").c_str() );
-    TFile cjet_file( ("mv2c10_"+event+"_"+level+"_cjet_discriminants.root").c_str() );
-    TFile ljet_file( ("mv2c10_"+event+"_"+level+"_ljet_discriminants.root").c_str() );
+    TFile bjet_file( ("mv2c10_"+event+"_"+label+"_bjet_discriminants.root").c_str() );
+    TFile cjet_file( ("mv2c10_"+event+"_"+label+"_cjet_discriminants.root").c_str() );
+    TFile ljet_file( ("mv2c10_"+event+"_"+label+"_ljet_discriminants.root").c_str() );
     TH1D* bjet_discriminant_histogram;
     TH1D* cjet_discriminant_histogram;
     TH1D* ljet_discriminant_histogram;
@@ -22,7 +21,7 @@ void generate_plots(string event, string level) {
     cjet_discriminant_histogram->Rebin(rebin_level);
     ljet_discriminant_histogram->Rebin(rebin_level);
 
-    THStack* overlaid_c10_discriminant = new THStack( "all_c10_discriminants", (level_title+" MV2c10 Discriminants for "+event_title+" Events (Stacked)").c_str() );
+    THStack* overlaid_c10_discriminant = new THStack( "all_c10_discriminants", (title_prefix+" MV2c10 Discriminants for "+event_title+" Events (Stacked)").c_str() );
     overlaid_c10_discriminant->Add(ljet_discriminant_histogram);
     overlaid_c10_discriminant->Add(cjet_discriminant_histogram);
     overlaid_c10_discriminant->Add(bjet_discriminant_histogram);
@@ -37,8 +36,8 @@ void generate_plots(string event, string level) {
     ljet_discriminant_histogram->SetLineColor(kRed);
 
     int histogram_line_width = 3;
-    int histogram_line_style = (level == "offline") ? 1 : 9;
     float y_axis_offset = 1.5;
+    int histogram_line_style = 1;
 
     bjet_discriminant_histogram->SetLineWidth(histogram_line_width);
     cjet_discriminant_histogram->SetLineWidth(histogram_line_width);
@@ -56,7 +55,7 @@ void generate_plots(string event, string level) {
     bjet_discriminant_histogram->GetXaxis()->CenterTitle();
     bjet_discriminant_histogram->GetYaxis()->CenterTitle();
     bjet_discriminant_histogram->GetYaxis()->SetTitleOffset(y_axis_offset);
-    canvas->SaveAs( ("mv2c10_"+event+"_"+level+"_bjet_discriminants.png").c_str() );
+    canvas->SaveAs( ("mv2c10_"+label+"_bjet_discriminants.png").c_str() );
 
     cjet_discriminant_histogram->Draw("hist");
     cjet_discriminant_histogram->GetXaxis()->SetTitle("MV2c10 Discriminant");
@@ -64,7 +63,7 @@ void generate_plots(string event, string level) {
     cjet_discriminant_histogram->GetXaxis()->CenterTitle();
     cjet_discriminant_histogram->GetYaxis()->CenterTitle();
     cjet_discriminant_histogram->GetYaxis()->SetTitleOffset(y_axis_offset);
-    canvas->SaveAs( ("mv2c10_"+event+"_"+level+"_cjet_discriminants.png").c_str() );
+    canvas->SaveAs( ("mv2c10_"+label+"_cjet_discriminants.png").c_str() );
 
     ljet_discriminant_histogram->Draw("hist");
     ljet_discriminant_histogram->GetXaxis()->SetTitle("MV2c10 Discriminant");
@@ -72,7 +71,7 @@ void generate_plots(string event, string level) {
     ljet_discriminant_histogram->GetXaxis()->CenterTitle();
     ljet_discriminant_histogram->GetYaxis()->CenterTitle();
     ljet_discriminant_histogram->GetYaxis()->SetTitleOffset(y_axis_offset);
-    canvas->SaveAs( ("mv2c10_"+event+"_"+level+"_ljet_discriminants.png").c_str() );
+    canvas->SaveAs( ("mv2c10_"+label+"_ljet_discriminants.png").c_str() );
     
     
     overlaid_c10_discriminant->Draw("hist");
@@ -89,7 +88,7 @@ void generate_plots(string event, string level) {
     overlaid_c10_discriminant->GetYaxis()->CenterTitle();
     overlaid_c10_discriminant->GetYaxis()->SetTitleOffset(y_axis_offset);
     canvas->BuildLegend(0.5, 0.65, 0.7, 0.85);
-    canvas->SaveAs( ("mv2c10_"+event+"_"+level+"_all_discriminants_stack_log.png").c_str() );
+    canvas->SaveAs( ("mv2c10_"+label+"_all_discriminants_stack_log.png").c_str() );
     
     //Normalize the plots with respect to THEIR entries
     //(not the global number of entries)
@@ -98,11 +97,11 @@ void generate_plots(string event, string level) {
     cjet_discriminant_histogram->Scale( 1.0 / cjet_discriminant_histogram->Integral() );
     ljet_discriminant_histogram->Scale( 1.0 / ljet_discriminant_histogram->Integral() );
 
-    overlaid_c10_discriminant->SetTitle( (level_title+" MV2c10 Discriminants for "+event_title+" Events").c_str() );
+    overlaid_c10_discriminant->SetTitle( (title_prefix+" MV2c10 Discriminants for "+event_title+" Events").c_str() );
     overlaid_c10_discriminant->Draw("nostack hist");
     overlaid_c10_discriminant->SetMinimum(0);
     overlaid_c10_discriminant->SetMaximum(0.7);
 
     canvas->BuildLegend(0.3, 0.65, 0.5, 0.85);
-    canvas->SaveAs( ("mv2c10_"+event+"_"+level+"_all_discriminants.png").c_str() );
+    canvas->SaveAs( ("mv2c10_"+label+"_all_discriminants.png").c_str() );
 }

@@ -1,50 +1,21 @@
 #include "../util/titles.hh"
 
 using _mv2c10_type = double;
-//using _mv2c10_type = float;
 
 int _num_bins = 1000;
 float _pt_min_cutoff = 55*1000; //= 55 GeV
 float _eta_min_cutoff = 2.5; //= 55 GeV
 string _slurm_arrays = "/users/cmilke/qualification/bJetTrigger/Tuning_rel21/run/slurm_arrays/";
 
-//string _ttbar_online_hybrid_retune_flavntuple = "/users/cmilke/qualification/bJetTrigger/Tuning_rel21/run/flavntuple_20181122_ttbar_cheat_step4.root";
-//string _ttbar_online_hybrid_retune_alt_flavntuple = "/users/cmilke/qualification/bJetTrigger/Tuning_rel21/run/flavntuple_20181122_ttbar_test_step4.root";
-//string _Zprime_flavntuple = "/users/cmilke/qualification/bJetTrigger/Tuning_rel21/run/flavntuple_20181122_Zprime_step4.root";
-string _ttbar_online_hybrid_retune_flavntuple_med       = _slurm_arrays + "slurm_20190218_ttbar_41000_med_step4/merged_flavntuple.root";
-string _ttbar_online_hybrid_retune_flavntuple_med_copy  = _slurm_arrays + "slurm_20190226_ttbar_41000_med_step4/merged_flavntuple.root";
-string _ttbar_online_hybrid_retune_flavntuple_med_copy2 = _slurm_arrays + "slurm_20190227_ttbar_41000_med_step4/merged_flavntuple.root";
-string _ttbar_online_hybrid_retune_flavntuple_med_alt1  = _slurm_arrays + "slurm_20190228_ttbar_41000_med_alt1_step4/merged_flavntuple.root";
-string _ttbar_online_hybrid_retune_flavntuple_med_alt2  = _slurm_arrays + "slurm_20190228_ttbar_41000_med_alt2_step4/merged_flavntuple.root";
-string _ttbar_online_hybrid_retune_flavntuple_med_alt3  = _slurm_arrays + "slurm_20190228_ttbar_41000_med_alt3_step4/merged_flavntuple.root";
-//string _ttbar_online_hybrid_retune_flavntuple_med_alt   = _slurm_arrays + "slurm_20190218_ttbar_41000_med_alt1_step4/merged_flavntuple.root";
-string _ttbar_online_hybrid_retune_flavntuple_large     = _slurm_arrays + "slurm_20190218_ttbar_41000_large_10pc_step4/merged_flavntuple.root";
-string _ttbar_online_hybrid_retune_flavntuple_full      = _slurm_arrays + "slurm_20190218_ttbar_41000_full_step4/merged_flavntuple.root";
 
-//string _ttbar_ftk_flavntuple = "/users/cmilke/qualification/bJetTrigger/Tuning_rel21/run/flavntuple_20190111_ttbar_step1.root";
-//string _Zprime_ftk_flavntuple = "/users/cmilke/qualification/bJetTrigger/Tuning_rel21/run/flavntuple_20190111_Zprime_step1.root";
-
-string _ttbar_online_retune_med_flavntuple = "/users/cmilke/qualification/bJetTrigger/Tuning_rel21/run/slurm_arrays/slurm_20190212_ttbar_41000_med_step4/merged_flavntuple.root";
-string _ttbar_online_retune_med_alt_flavntuple = "/users/cmilke/qualification/bJetTrigger/Tuning_rel21/run/slurm_arrays/slurm_20190212_ttbar_41000_med_step4/merged_flavntuple.root";
-string _ttbar_online_retune_large_flavntuple = "/users/cmilke/qualification/bJetTrigger/Tuning_rel21/run/slurm_arrays/slurm_20190212_ttbar_41000_large_alt1_step4/merged_flavntuple.root";
-
-string _ttbar_online_retune_1234 = _slurm_arrays + "/slurm_20190303_ttbar_41000_500k_step4/merged_flavntuple.root";
-string _ttbar_online_retune_1234_med = _slurm_arrays + "/slurm_20190308_ttbar_41000_med_step4/merged_flavntuple.root";
-string _ttbar_online_retune_123_4 = _slurm_arrays + "/slurm_20190303_ttbar_41000_500k_alt2_step4/merged_flavntuple.root";
-string _ttbar_online_retune_1_23_4 = _slurm_arrays + "/slurm_20190303_ttbar_41000_500k_alt3_step4/merged_flavntuple.root";
-
-string _ttbar_official_tune_flavntuple = "/users/cmilke/qualification/bJetTrigger/Tuning_rel21/run/slurm_arrays/slurm_20190212_ttbar_41000_full_official/merged_flavntuple.root";
-string _ttbar_offline_flavntuple = "/users/cmilke/qualification/bJetTrigger/Tuning_rel21/run/slurm_arrays/slurm_20190212_ttbar_41000_full_offline/merged_flavntuple.root";
-
-
-vector<TH1D*>* make_histograms(string event, string level) {
-    string level_title = get_level_title(level);
+vector<TH1D*>* make_histograms(string event, string label) {
+    string label_title = get_level_title(label);
     string event_title = get_event_title(event);
 
     vector<TH1D*>* histogram_list = new vector<TH1D*>();
-    histogram_list->push_back( new TH1D("bjet_discriminant", (level_title+" MV2c10 Discriminant for "+event_title+" B-Jets").c_str(), _num_bins, -1, 1) );
-    histogram_list->push_back( new TH1D("cjet_discriminant", (level_title+" MV2c10 Discriminant for "+event_title+" C-Jets").c_str(), _num_bins, -1, 1) );
-    histogram_list->push_back( new TH1D("ljet_discriminant", (level_title+" MV2c10 Discriminant for "+event_title+" Light-Jets").c_str(), _num_bins, -1, 1) );
+    histogram_list->push_back( new TH1D("bjet_discriminant", (label_title+" MV2c10 Discriminant for "+event_title+" B-Jets").c_str(), _num_bins, -1, 1) );
+    histogram_list->push_back( new TH1D("cjet_discriminant", (label_title+" MV2c10 Discriminant for "+event_title+" C-Jets").c_str(), _num_bins, -1, 1) );
+    histogram_list->push_back( new TH1D("ljet_discriminant", (label_title+" MV2c10 Discriminant for "+event_title+" Light-Jets").c_str(), _num_bins, -1, 1) );
 
     return histogram_list;
 }
@@ -82,10 +53,10 @@ void fill_histograms(TFile& data_file, vector<TH1D*>* histogram_list, string tre
 }
 
 
-void save_and_delete_histograms(vector<TH1D*>* histogram_list, string event, string level) {
-    histogram_list->at(0)->SaveAs( ("mv2c10_"+event+"_"+level+"_bjet_discriminants.root").c_str() );
-    histogram_list->at(1)->SaveAs( ("mv2c10_"+event+"_"+level+"_cjet_discriminants.root").c_str() );
-    histogram_list->at(2)->SaveAs( ("mv2c10_"+event+"_"+level+"_ljet_discriminants.root").c_str() );
+void save_and_delete_histograms(vector<TH1D*>* histogram_list, string event, string label) {
+    histogram_list->at(0)->SaveAs( ("mv2c10_"+event+"_"+label+"_bjet_discriminants.root").c_str() );
+    histogram_list->at(1)->SaveAs( ("mv2c10_"+event+"_"+label+"_cjet_discriminants.root").c_str() );
+    histogram_list->at(2)->SaveAs( ("mv2c10_"+event+"_"+label+"_ljet_discriminants.root").c_str() );
 
     delete histogram_list->at(0);
     delete histogram_list->at(1);
@@ -94,42 +65,35 @@ void save_and_delete_histograms(vector<TH1D*>* histogram_list, string event, str
 }
 
 
-void record_flavntuple( string flavntuple_name, string event, string level, string jet_branch) {
-    vector<TH1D*>* histogram_list = make_histograms(event, level);
+void record_aod( vector<string>& aod_list, string event, string label) {
+    vector<TH1D*>* histogram_list = make_histograms(event, "offline");
+    for ( string aod_name : aod_list ) {
+        cout << "Reading " << aod_name << endl << endl;
+        TFile aod_file( aod_name.c_str(), "read" );
+        fill_histograms(aod_file, histogram_list, "CollectionTree", "AntiKt4EMTopoJetsAuxDyn.ConeTruthLabelID", "BTagging_AntiKt4EMTopoAuxDyn.MV2c10_discriminant");
+    }
+    save_and_delete_histograms(histogram_list, event, label);
+}
+
+
+void record_flavntuple( string flavntuple_name, string event, string label, string jet_branch) {
+    vector<TH1D*>* histogram_list = make_histograms(event, label);
     TFile flavntuple_file( flavntuple_name.c_str(), "read" );
     fill_histograms(flavntuple_file, histogram_list, "bTag_TriggerJets", "jet_truthflav", jet_branch);
-    save_and_delete_histograms(histogram_list, event, level);
+    save_and_delete_histograms(histogram_list, event, label);
 }
 
 
 void record_discriminants() {
-    //record_flavntuple(_ttbar_ftk_flavntuple_name, "ttbar", "ftk", "jet_mv2c10");
-    //record_flavntuple(_Zprime_ftk_flavntuple_name, "Zprime", "ftk", "jet_mv2c10");
-
-    //record_flavntuple(_ttbar_online_hybrid_retune_flavntuple, "ttbar", "online_hybrid_retune", "jet_mv2c10");
-    //record_flavntuple(_ttbar_online_hybrid_retune_alt_flavntuple, "ttbar", "online_hybrid_retune_alt", "jet_mv2c10");
-    //record_flavntuple(_Zprime_flavntuple_name, "Zprime", "online", "jet_mv2c10");
-    
-    //record_flavntuple(_ttbar_online_hybrid_retune_flavntuple_large, "ttbar", "online_hybrid_retune_large", "jet_mv2c10");
-    //record_flavntuple(_ttbar_online_hybrid_retune_flavntuple_full, "ttbar", "online_hybrid_retune_full", "jet_mv2c10");
-
-    //record_flavntuple(_ttbar_online_hybrid_retune_flavntuple_med, "ttbar", "online_hybrid_retune_med", "jet_mv2c10");
-    //record_flavntuple(_ttbar_online_hybrid_retune_flavntuple_med_copy, "ttbar",  "online_hybrid_retune_med_copy1", "jet_mv2c10");
-    //record_flavntuple(_ttbar_online_hybrid_retune_flavntuple_med_copy2, "ttbar", "online_hybrid_retune_med_copy2", "jet_mv2c10");
-    //record_flavntuple(_ttbar_online_hybrid_retune_flavntuple_med_alt1, "ttbar", "online_hybrid_retune_med_alt1", "jet_mv2c10");
-    //record_flavntuple(_ttbar_online_hybrid_retune_flavntuple_med_alt2, "ttbar", "online_hybrid_retune_med_alt2", "jet_mv2c10");
-    //record_flavntuple(_ttbar_online_hybrid_retune_flavntuple_med_alt3, "ttbar", "online_hybrid_retune_med_alt3", "jet_mv2c10");
-
-    //record_flavntuple(_ttbar_online_retune_1234, "ttbar", "online_ttbar_retune_1234", "jet_mv2c10");
-    //record_flavntuple(_ttbar_online_retune_123_4, "ttbar", "online_ttbar_retune_123_4", "jet_mv2c10");
-    //record_flavntuple(_ttbar_online_retune_1_23_4, "ttbar", "online_ttbar_retune_1_23_4", "jet_mv2c10");
-    //record_flavntuple(_ttbar_online_retune_1234_med, "ttbar", "online_ttbar_retune_1234_med", "jet_mv2c10");
-    record_flavntuple(_ttbar_online_retune_med_flavntuple, "ttbar", "online_retune_med", "jet_mv2c10");
-    record_flavntuple(_ttbar_online_retune_med_alt_flavntuple, "ttbar", "online_retune_med_alt", "jet_mv2c10");
-    record_flavntuple(_ttbar_online_retune_large_flavntuple, "ttbar", "online_retune_large", "jet_mv2c10");
-    
-    //record_flavntuple(_ttbar_official_tune_flavntuple_name, "ttbar", "online_official_tune", "jet_mv2c10");
-
-    //record_flavntuple(_ttbar_offline_flavntuple_name, "ttbar", "offline", "Offjet_mv2c10");
-    //record_flavntuple(_Zprime_offline_flavntuple_name, "Zprime", "offline", "Offjet_mv2c10");
+    record_flavntuple(_slurm_arrays+"slurm_20190501_hlt_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_hlt", "jet_mv2c10");
+    record_flavntuple(_slurm_arrays+"slurm_20190501_ftkVtx_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_ftkVtx", "jet_mv2c10");
+    record_flavntuple(_slurm_arrays+"slurm_20190501_hlt_gutted2_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_hlt_gutted2", "jet_mv2c10");
+    record_flavntuple(_slurm_arrays+"slurm_20190501_ftkVtx_gutted2_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_ftkVtx_gutted2", "jet_mv2c10");
+    //record_flavntuple(_slurm_arrays+"slurm_20190430_hlt_guttingTest_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_hlt_gutted", "jet_mv2c10");
+    //record_flavntuple(_slurm_arrays+"slurm_20190430_ftkVtx_guttingTest_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_ftkVtx_gutted", "jet_mv2c10");
+    //record_flavntuple(_slurm_arrays+"slurm_20190426_ftkVtx_tuneTest_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_ftkVtx_wrong", "jet_mv2c10");
+    //record_flavntuple(_slurm_arrays+"slurm_20190425_hlt_dRtest_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_hlt_alt", "jet_mv2c10");
+    //record_flavntuple(_slurm_arrays+"slurm_20190425_ftkVtx_dRtest_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_ftkVtx_alt", "jet_mv2c10");
+    //record_flavntuple(_slurm_arrays+"slurm_20190420_ftk_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_ftk", "jet_mv2c10");
+    //record_flavntuple(_slurm_arrays+"slurm_20190420_ftkRefit_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_ftkRefit", "jet_mv2c10");
 }

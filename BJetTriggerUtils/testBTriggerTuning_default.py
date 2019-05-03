@@ -1,6 +1,6 @@
 ## this is a template. Interesting parameters can be found looking for string "MY"
 ############# USER PARAMETERS ########
-RETAG = MYRETAG
+RETAG = True
 LocalCalibSuffix = "MYCALIB"
 #####################################
 print 'FLS: subjob number MYID'
@@ -72,14 +72,14 @@ from BTagging.BTaggingFlags import BTaggingFlags
 #### if the new file is already in the datatbase: simple edit the name
 #BTaggingFlags.CalibrationTag = 'BTagCalibRUN12-08-18'
 #### if you want to use your own calibration file use this part below
-if RETAG & (LocalCalibSuffix!='WHATEVER') :
-    BTaggingFlags.CalibrationFromLocalReplica = True
-    BTaggingFlags.TrigCalibrationFolderRoot = '/GLOBAL/TrigBTagCalib/'
-    BTaggingFlags.TrigCalibrationTag = LocalCalibSuffix
-#### if you want to use the real actual calibration
-#if RETAG:
+#if RETAG and (LocalCalibSuffix!='WHATEVER') :
+#    BTaggingFlags.CalibrationFromLocalReplica = True
 #    BTaggingFlags.TrigCalibrationFolderRoot = '/GLOBAL/TrigBTagCalib/'
-#    BTaggingFlags.TrigCalibrationTag = 'TrigBTagCalibRUN12-08-12'
+#    BTaggingFlags.TrigCalibrationTag = LocalCalibSuffix
+#### if you want to use the real actual calibration
+if RETAG:
+    BTaggingFlags.TrigCalibrationFolderRoot = '/GLOBAL/TrigBTagCalib/'
+    BTaggingFlags.TrigCalibrationTag = 'TrigBTagCalibRUN12-08-14'
 
 #BTaggingFlags.Jets = ['AntiKt4EMTopo']
 
@@ -104,17 +104,13 @@ from TrkVertexFitterUtils.TrkVertexFitterUtilsConf import Trk__TrackToVertexIPEs
 ToolSvc+=Trk__TrackToVertexIPEstimator("trkIPEstimator")
 
 alg1 = CfgMgr.BTriggerTuning()
-### For FTK
-#alg1.TriggerName = "HLT_j35_boffperf_split_FTK"
-#alg1.Trig_JetKey = "SplitJet"
-#alg1.Trig_PriVtxKey = "HLT_PrimVertexFTK"  # Primary vertices are not attached to the trigger navigation yet. Should be solved by 21.0.18
-#alg1.Trig_TrackKey = "InDetTrigTrackingxAODCnv_Bjet_FTK_IDTrig"
 
+alg1.Trig_JetKey = "MYJETKEY"
+alg1.Trig_PriVtxKey = "MYPRIMVTXKEY"
+alg1.Trig_TrackKey = "MYTRIGTRACKKEY"
+alg1.TriggerName = "MYTRIGGERNAME"
 
-#alg1.TriggerName = "HLT_j35_boffperf_split"
-alg1.TriggerName = "HLT_j15_gsc35_boffperf_split"
 alg1.Stream = "TriggerJets"
-alg1.Trig_JetKey = "JETTYPE"
 alg1.BTagTool           = BTagConf.getJetCollectionTool("AntiKt4EMTopo")
 alg1.BTagTrackAssocTool = BTagConf.getJetCollectionMainAssociatorTool("AntiKt4EMTopo")
 alg1.BTagSecVertexing   = BTagConf.getJetCollectionSecVertexingTool("AntiKt4EMTopo")

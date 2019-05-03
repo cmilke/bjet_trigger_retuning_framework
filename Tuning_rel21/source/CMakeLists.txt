@@ -1,4 +1,4 @@
-# $Id: ClientCMakeLists.txt.in 751112 2016-05-31 12:00:21Z krasznaa $
+# Copyright (C) 2002-2017 CERN for the benefit of the ATLAS collaboration
 #
 # This is a template for a CMakeLists.txt file that can be used in a client
 # project (work area) to set up building ATLAS packages against the configured
@@ -28,14 +28,14 @@ endif()
 find_package( AtlasCMake QUIET )
 
 # Find the project that we depend on:
-find_package( AtlasProduction )
+find_package( AthenaP1 )
 
 # Set up CTest:
 atlas_ctest_setup()
 
 # Set up a work directory project:
-atlas_project( WorkDir 21.0.13.1
-   USE AtlasProduction 21.0.13.1
+atlas_project( WorkDir 21.1.55
+   USE AthenaP1 21.1.55
    FORTRAN )
 
 # Set up the runtime environment setup script(s):

@@ -1,0 +1,73 @@
+#!/bin/bash
+set -e
+
+unset ttbar
+unset zprime
+source $1 || exit
+
+#export partition='htc'
+export partition='standard-mem-s'
+
+if [[ -n $ttbar ]] && [[ -n $zprime ]]; then 
+    export hybridtuning=1
+elif [[ -n $ttbar ]]; then
+    export eventtype=$ttbar
+elif [[ -n $zprime ]]; then
+    export eventtype=$zprime
+else
+    echo 'You need to define a sample!'
+    exit
+fi
+
+if [[ -n $hybridtuning ]]; then
+    export samples_step1="${ttbar}_${size1} ${zprime}_${size1}"
+    export samples_step2="${ttbar}_${size2} ${zprime}_${size2}"
+    export samples_step4="${ttbar}_${size3} ${zprime}_${size3}"
+    export tag="${date}_hybrid_${ttbar}_${zprime}"
+else
+    export samples_step1="${eventtype}_${size1}"
+    export samples_step2="${eventtype}_${size2}"
+    export samples_step4="${eventtype}_${size3}"
+    export tag="${date}_${eventtype}"
+fi
+
+export calibtag_step1="${tag}_${size1}_step1"
+export calibtag_step3="${tag}_${size3}_step3"
+#export calibtag_step3="20190227_hybrid_ttbar_41000_Zprime_427080_med_step3"
+
+trainingsuffix='puCut0_tm0_stat1200k_cStat600k_BdtGrad_bin_cuts200_depth30_nTrees1000_MNS005_c07'
+if [[ -n $hybridtuning ]]; then trainingsuffix="${trainingsuffix}_HybridTune"; fi
+export trainingsuffix
+export trainingprefix='MV2_gsc35'
+
+export trainingtemplate='MV2_gsc35_FLo_20180522_puCut0_tm0_stat1200k_cStat600k_BdtGrad_bin_cuts200_depth30_nTrees1000_MNS005_c07_HybridTune.varlist'
+#export trainingtemplate='MV2_gsc35_altNoSV1dR_puCut0_tm0_stat1200k_cStat600k_BdtGrad_bin_cuts200_depth30_nTrees1000_MNS005_c07_HybridTune.varlist'
+#export trainingtemplate='MV2_gsc35_altGutted_puCut0_tm0_stat1200k_cStat600k_BdtGrad_bin_cuts200_depth30_nTrees1000_MNS005_c07_HybridTune.varlist'
+#export trainingtemplate='MV2_gsc35_altGutted2_puCut0_tm0_stat1200k_cStat600k_BdtGrad_bin_cuts200_depth30_nTrees1000_MNS005_c07_HybridTune.varlist'
+export jobidregex='s/Submitted batch job \([0-9]\+\)/\1/p'
+
+
+readonly workingdir date size1 size2 size3 ttbar zprime jet_key \
+    primary_vertex_key trigger_track_key trigger_name hybridtuning \
+    eventtype samples_step1 samples_step2 samples_step4 \
+    calibtag_step1 calibtag_step3 trainingsuffix trainingprefix \
+    trainingsuffix jobidregex
+
+echo -e "\n\nAUTORUN HAS BEEN MODIFIED FROM DEFAULT. ARE YOU SURE THIS IS WHAT YOU WANT??"
+echo testBTriggerTuning_template is linked to default steering file
+echo full_retune has been modified!
+echo Step 1.1 has been modified! Now generating flavntuples
+echo Step 1.2 has been modified! Disabled
+echo Step 2 has been modified! Disabled
+echo Step 3.1 has been modified! Disabled
+echo Step 3.2 has been modified! Disabled
+echo Step 4 has been modified! Disabled
+echo -e '\n\n'
+sleep 5
+
+bash retune_step1.1.sh || (echo 'Step 1.1 encountered an error...'; exit 1)
+#bash retune_step1.2.sh || (echo 'Step 1.2 encountered an error...'; exit 1)
+#bash retune_step2.sh   || (echo 'Step 2 encountered an error...'; exit 1)
+#bash retune_step3.1.sh || (echo 'Step 3.1 encountered an error...'; exit 1)
+#bash retune_step3.2.sh || (echo 'Step 3.2 encountered an error...'; exit 1)
+#bash retune_step4.sh   || (echo 'Step 4 encountered an error...'; exit 1)
