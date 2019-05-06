@@ -28,14 +28,14 @@ endif()
 find_package( AtlasCMake QUIET )
 
 # Find the project that we depend on:
-find_package( AthenaP1 )
+find_package( Athena )
 
 # Set up CTest:
 atlas_ctest_setup()
 
 # Set up a work directory project:
-atlas_project( WorkDir 21.1.55
-   USE AthenaP1 21.1.55
+atlas_project( WorkDir 21.3.14
+   USE Athena 21.3.14
    FORTRAN )
 
 # Set up the runtime environment setup script(s):

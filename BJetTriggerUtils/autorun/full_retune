@@ -54,7 +54,7 @@ readonly workingdir date size1 size2 size3 ttbar zprime jet_key \
     trainingsuffix jobidregex
 
 echo -e "\n\nAUTORUN HAS BEEN MODIFIED FROM DEFAULT. ARE YOU SURE THIS IS WHAT YOU WANT??"
-echo testBTriggerTuning_template is linked to default steering file
+#echo testBTriggerTuning_template is linked to default steering file
 echo full_retune has been modified!
 echo Step 1.1 has been modified! Now generating flavntuples
 echo Step 1.2 has been modified! Disabled
