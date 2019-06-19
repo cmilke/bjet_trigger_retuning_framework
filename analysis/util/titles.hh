@@ -15,3 +15,7 @@ string get_event_title(string event) {
     
     return event_title;
 }
+
+
+const string _slurm_arrays = "/users/cmilke/qualification/bJetTrigger/Tuning_rel21/run/slurm_arrays/";
+const string _archived_arrays = "/users/cmilke/qualification/bJetTrigger/Tuning_rel21/run/.archived_slurm_arrays/";

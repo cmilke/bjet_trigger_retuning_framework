@@ -1,7 +1,8 @@
 void print_info() {
     vector<string> file_list{
         //"/users/cmilke/scratch/authorship/datasets/ttbar_aod_samples/valid1.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.digit.AOD.e4993_s3214_r11234_d1505_r11391/AOD.17855379._000001.pool.root.1"
-        "/users/cmilke/scratch/authorship/datasets/ttbar_aod_samples/valid1.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.digit.AOD.e4993_s3214_r11234_d1505_r11280_tid17270662_00/AOD.17270662._000001.pool.root.1"
+        //"/users/cmilke/scratch/authorship/datasets/ttbar_aod_samples/valid1.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.digit.AOD.e4993_s3214_r11234_d1505_r11280_tid17270662_00/AOD.17270662._000001.pool.root.1"
+        "/users/cmilke/scratch/authorship/datasets/ttbar_aod_samples/mc16_13TeV.410470.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad.digit.AOD.e6337_e5984_s3126_r11392_d1512_r11391/AOD.17890512._001358.pool.root.1"
         //"/scratch/users/flosterzo/datasets/mc16_13TeV.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.merge.AOD.e3698_s2997_r8903_r8906/AOD.10226638._000230.pool.root.1"
         //"/users/cmilke/scratch/authorship/datasets/ttbar_aod_samples/mc16_13TeV.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.recon.AOD.e5603_s3126_d1472_d1471_r10516_tid14330755_00/AOD.14330755._000015.pool.root.1"
         //"/users/cmilke/qualification/bJetTrigger/Tuning_rel21/run/flavntuple_20181122_ttbar_step1.root"

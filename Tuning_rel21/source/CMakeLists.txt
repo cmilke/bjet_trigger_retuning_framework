@@ -34,8 +34,8 @@ find_package( Athena )
 atlas_ctest_setup()
 
 # Set up a work directory project:
-atlas_project( WorkDir 21.3.14
-   USE Athena 21.3.14
+atlas_project( WorkDir 21.3.15
+   USE Athena 21.3.15
    FORTRAN )
 
 # Set up the runtime environment setup script(s):

@@ -1,4 +1,5 @@
 set -e
+lockvariables
 echo -e '\nSTART STEP 3 PART 1\n'
 cd ${workingdir}/trainingMV2/
 . setup.sh  || ((1)) 

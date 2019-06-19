@@ -56,12 +56,12 @@ include ("RecExCommon/RecExCommon_topOptions.py")
 from AthenaCommon.AlgSequence import AlgSequence
 algSeq = AlgSequence()
 
-### GEO Business 
-from AthenaCommon.GlobalFlags import globalflags
-print "detDescr from global flags= "+str(globalflags.DetDescrVersion)
-from AtlasGeoModel.InDetGMJobProperties import GeometryFlags as geoFlags
-print "geoFlags.Run()   = "+geoFlags.Run()
-print "geoFlags.isIBL() = "+str(  geoFlags.isIBL() )
+#### GEO Business 
+#from AthenaCommon.GlobalFlags import globalflags
+#print "detDescr from global flags= "+str(globalflags.DetDescrVersion)
+#from AtlasGeoModel.InDetGMJobProperties import GeometryFlags as geoFlags
+#print "geoFlags.Run()   = "+geoFlags.Run()
+#print "geoFlags.isIBL() = "+str(  geoFlags.isIBL() )
 
 ###############################################################
 ### THIS is the full retagging configuration

@@ -5,7 +5,6 @@ using _mv2c10_type = double;
 int _num_bins = 1000;
 float _pt_min_cutoff = 55*1000; //= 55 GeV
 float _eta_min_cutoff = 2.5; //= 55 GeV
-string _slurm_arrays = "/users/cmilke/qualification/bJetTrigger/Tuning_rel21/run/slurm_arrays/";
 
 
 vector<TH1D*>* make_histograms(string event, string label) {
@@ -85,15 +84,10 @@ void record_flavntuple( string flavntuple_name, string event, string label, stri
 
 
 void record_discriminants() {
-    record_flavntuple(_slurm_arrays+"slurm_20190501_hlt_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_hlt", "jet_mv2c10");
-    record_flavntuple(_slurm_arrays+"slurm_20190501_ftkVtx_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_ftkVtx", "jet_mv2c10");
-    record_flavntuple(_slurm_arrays+"slurm_20190501_hlt_gutted2_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_hlt_gutted2", "jet_mv2c10");
-    record_flavntuple(_slurm_arrays+"slurm_20190501_ftkVtx_gutted2_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_ftkVtx_gutted2", "jet_mv2c10");
-    //record_flavntuple(_slurm_arrays+"slurm_20190430_hlt_guttingTest_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_hlt_gutted", "jet_mv2c10");
-    //record_flavntuple(_slurm_arrays+"slurm_20190430_ftkVtx_guttingTest_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_ftkVtx_gutted", "jet_mv2c10");
-    //record_flavntuple(_slurm_arrays+"slurm_20190426_ftkVtx_tuneTest_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_ftkVtx_wrong", "jet_mv2c10");
-    //record_flavntuple(_slurm_arrays+"slurm_20190425_hlt_dRtest_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_hlt_alt", "jet_mv2c10");
-    //record_flavntuple(_slurm_arrays+"slurm_20190425_ftkVtx_dRtest_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_ftkVtx_alt", "jet_mv2c10");
-    //record_flavntuple(_slurm_arrays+"slurm_20190420_ftk_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_ftk", "jet_mv2c10");
-    //record_flavntuple(_slurm_arrays+"slurm_20190420_ftkRefit_ttbar_41000valid1_full_step4/merged_flavntuple.root", "ttbar", "retune_ftkRefit", "jet_mv2c10");
+    //record_flavntuple(_slurm_arrays+"slurm_20190601_defaultHLT_ttbar_410470_step1_step1/merged_flavntuple.root", "ttbar", "defaultHLT", "jet_mv2c10");
+
+    //record_flavntuple(_slurm_arrays+"slurm_20190601_defaultHLT_ttbar_410470_step1_step1/merged_flavntuple.root", "ttbar", "defaultHLT", "jet_mv2c10");
+    record_flavntuple(_slurm_arrays+"slurm_20190601_hlt_ttbar_410470_step4_step4/merged_flavntuple.root", "ttbar", "retune_hlt", "jet_mv2c10");
+    //record_flavntuple(_slurm_arrays+"slurm_20190613_ftk_IDTrig_ttbar_410470_step4_step4/merged_flavntuple.root", "ttbar", "retune_ftk_idtrig", "jet_mv2c10");
+    //record_flavntuple(_slurm_arrays+"slurm_20190613_ftkRefit_IDTrig_ttbar_410470_step4_step4/merged_flavntuple.root", "ttbar", "retune_ftkRefit_idtrig", "jet_mv2c10");
 }

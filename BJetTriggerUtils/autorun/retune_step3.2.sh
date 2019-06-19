@@ -1,4 +1,5 @@
 set -e
+lockvariables
 echo -e '\nSTART STEP 3 PART 2\n'
 cd ${workingdir}/calibFilePreparator/
 . setup.sh || ((1)) 

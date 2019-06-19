@@ -1,7 +1,7 @@
 #Release cmake
 
-export AtlasSetup="/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/AtlasSetup/V01-00-30/AtlasSetup"
-export AtlasSetupVersion="AtlasSetup-01-00-30"
+export AtlasSetup="/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/AtlasSetup/V01-00-33/AtlasSetup"
+export AtlasSetupVersion="AtlasSetup-01-00-33"
 export LANG="C"
 export LC_ALL="C"
 export BINARY_TAG="x86_64-slc6-gcc62-opt"
@@ -31,38 +31,32 @@ export FRONTIER_LOG_LEVEL="warning"
 export ATLAS_POOLCOND_PATH="/cvmfs/atlas-condb.cern.ch/repo/conditions"
 export ATLAS_DB_AREA="/cvmfs/atlas.cern.ch/repo/sw/database"
 export DBRELEASE_OVERRIDE="current"
-export GAUDI_ROOT="/cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3/2019-05-05T2150/GAUDI/21.3.14/InstallArea/x86_64-slc6-gcc62-opt"
+export GAUDI_ROOT="/cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3/2019-06-11T2150/GAUDI/21.3.15/InstallArea/x86_64-slc6-gcc62-opt"
 export SITEROOT="/cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3"
-export AtlasBaseDir="/cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3/2019-05-05T2150"
+export AtlasBaseDir="/cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3/2019-06-11T2150"
 export LCG_RELEASE_BASE="/cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3/sw/lcg/releases"
-export AtlasBuildStamp="2019-05-05T2150"
+export AtlasBuildStamp="2019-06-11T2150"
 export AtlasReleaseType="nightly"
 export AtlasBuildBranch="21.3"
 export AtlasProject="Athena"
 export TDAQ_RELEASE_BASE="/cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3"
-export ATLAS_RELEASE_BASE="/cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3/2019-05-05T2150"
+export ATLAS_RELEASE_BASE="/cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3/2019-06-11T2150"
 export ATLAS_RELEASEDATA="/cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3/atlas/offline/ReleaseData"
-export AtlasArea="/cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3/2019-05-05T2150/Athena/21.3.14"
+export AtlasArea="/cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3/2019-06-11T2150/Athena/21.3.15"
 export G4PATH="/cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3/Geant4"
-export AtlasVersion="21.3.14"
-source /cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3/2019-05-05T2150/Athena/21.3.14/InstallArea/x86_64-slc6-gcc62-opt/setup.sh
+export AtlasVersion="21.3.15"
+source /cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3/2019-06-11T2150/Athena/21.3.15/InstallArea/x86_64-slc6-gcc62-opt/setup.sh
 asetup_status=$?
 if [ ${asetup_status} -ne 0 ]; then
-    \echo "AtlasSetup(ERROR): sourcing release setup script (/cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3/2019-05-05T2150/Athena/21.3.14/InstallArea/x86_64-slc6-gcc62-opt/setup.sh) failed"
+    \echo "AtlasSetup(ERROR): sourcing release setup script (/cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3/2019-06-11T2150/Athena/21.3.15/InstallArea/x86_64-slc6-gcc62-opt/setup.sh) failed"
 fi
-if [ ! -z $ATLAS_LOCAL_ROOT_BASE ]; then
-    emacs -Q --batch >/dev/null 2>&1
-    emacs_status=$?
-    if [ ${emacs_status} -ne 0 ]; then
-        export PATH="$ATLAS_LOCAL_ROOT_BASE/wrappers/linuxApp:$PATH"
-    fi
-fi
+source /cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/AtlasSetup/V01-00-33/AtlasSetup/scripts/sys_exe-alias.sh emacs
 export TestArea="/users/cmilke/qualification/bJetTrigger/Tuning_rel21/source"
 
 #Release Summary as follows:
-#Release base=/cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3/2019-05-05T2150
+#Release base=/cvmfs/atlas-nightlies.cern.ch/repo/sw/21.3/2019-06-11T2150
 #Release project=Athena
-#Release releaseNum=21.3.14
+#Release releaseNum=21.3.15
 #Release asconfig=x86_64-slc6-gcc62-opt
 
 # Execute user-specified epilog

@@ -41,33 +41,39 @@ export trainingsuffix
 export trainingprefix='MV2_gsc35'
 
 export trainingtemplate='MV2_gsc35_FLo_20180522_puCut0_tm0_stat1200k_cStat600k_BdtGrad_bin_cuts200_depth30_nTrees1000_MNS005_c07_HybridTune.varlist'
-#export trainingtemplate='MV2_gsc35_altNoSV1dR_puCut0_tm0_stat1200k_cStat600k_BdtGrad_bin_cuts200_depth30_nTrees1000_MNS005_c07_HybridTune.varlist'
-#export trainingtemplate='MV2_gsc35_altGutted_puCut0_tm0_stat1200k_cStat600k_BdtGrad_bin_cuts200_depth30_nTrees1000_MNS005_c07_HybridTune.varlist'
-#export trainingtemplate='MV2_gsc35_altGutted2_puCut0_tm0_stat1200k_cStat600k_BdtGrad_bin_cuts200_depth30_nTrees1000_MNS005_c07_HybridTune.varlist'
 export jobidregex='s/Submitted batch job \([0-9]\+\)/\1/p'
 
 
-readonly workingdir date size1 size2 size3 ttbar zprime jet_key \
-    primary_vertex_key trigger_track_key trigger_name hybridtuning \
-    eventtype samples_step1 samples_step2 samples_step4 \
-    calibtag_step1 calibtag_step3 trainingsuffix trainingprefix \
-    trainingsuffix jobidregex
+#Several complicated scripts get sourced over the course of this overarching scripts,
+#and sometimes they do weird things. The function below is to make absolutely
+#nothing overwrites them at any point.
+lockvariables() {
+    readonly workingdir date size1 size2 size3 ttbar zprime jet_key \
+        primary_vertex_key trigger_track_key trigger_name indet_track_cut \
+        hybridtuning eventtype samples_step1 samples_step2 samples_step4 \
+        calibtag_step1 calibtag_step3 trainingsuffix trainingprefix \
+        trainingsuffix jobidregex;
+}
+export -f lockvariables
 
-echo -e "\n\nAUTORUN HAS BEEN MODIFIED FROM DEFAULT. ARE YOU SURE THIS IS WHAT YOU WANT??"
+
+echo -e "\n\nAUTORUN HAS BEEN MODIFIED FROM DEFAULT.\nARE YOU SURE THIS IS WHAT YOU WANT??"
 #echo testBTriggerTuning_template is linked to default steering file
-echo full_retune has been modified!
-echo Step 1.1 has been modified! Now generating flavntuples
-echo Step 1.2 has been modified! Disabled
-echo Step 2 has been modified! Disabled
-echo Step 3.1 has been modified! Disabled
-echo Step 3.2 has been modified! Disabled
-echo Step 4 has been modified! Disabled
+#echo run_analysis_array EXITS at line 41
+echo full_retune has been modified! Disabled steps 1-2
+#echo Step 1.1 has been modified! Producing flavntuples
+#echo Step 1.2 has been modified!
+#echo Step 2 has been modified!
+#echo Step 3.1 has been modified!
+#echo Step 3.2 has been modified!
+#echo Step 4 has been modified!
 echo -e '\n\n'
 sleep 5
 
-bash retune_step1.1.sh || (echo 'Step 1.1 encountered an error...'; exit 1)
+lockvariables
+#bash retune_step1.1.sh || (echo 'Step 1.1 encountered an error...'; exit 1)
 #bash retune_step1.2.sh || (echo 'Step 1.2 encountered an error...'; exit 1)
 #bash retune_step2.sh   || (echo 'Step 2 encountered an error...'; exit 1)
-#bash retune_step3.1.sh || (echo 'Step 3.1 encountered an error...'; exit 1)
-#bash retune_step3.2.sh || (echo 'Step 3.2 encountered an error...'; exit 1)
-#bash retune_step4.sh   || (echo 'Step 4 encountered an error...'; exit 1)
+bash retune_step3.1.sh || (echo 'Step 3.1 encountered an error...'; exit 1)
+bash retune_step3.2.sh || (echo 'Step 3.2 encountered an error...'; exit 1)
+bash retune_step4.sh   || (echo 'Step 4 encountered an error...'; exit 1)

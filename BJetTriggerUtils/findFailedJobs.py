@@ -7,6 +7,7 @@ if len(sys.argv) < 5:
   print 'usage: python findFailedJobs.py -dir <directory name> -job <jobId>'
   sys.exit()
 
+
 thedir = ''
 jobid = ''
 for arg in sys.argv:

@@ -13,20 +13,29 @@ TGraph* generate_roc(string event, string label, string graph_title, int line_co
     cjet_file->GetObject("cjet_discriminant", cjet_discriminant_histogram);
     ljet_file->GetObject("ljet_discriminant", ljet_discriminant_histogram);
 
+    vector<Double_t> bjet_efficiency;
+    vector<Double_t> ljet_rejection;
     int num_bins = bjet_discriminant_histogram->GetNbinsX();
-    Double_t* efficiency = new Double_t[num_bins];
-    Double_t* rejection = new Double_t[num_bins];
     Double_t bjet_total = bjet_discriminant_histogram->Integral();
     Double_t ljet_total = ljet_discriminant_histogram->Integral();
     for (int bin = 1; bin <= num_bins; bin++) {
         Double_t bjets_accepted = bjet_discriminant_histogram->Integral(bin, num_bins);
         Double_t ljets_accepted = ljet_discriminant_histogram->Integral(bin, num_bins);
-        if (ljets_accepted == 0) continue;
-        efficiency[bin-1] = bjets_accepted / bjet_total;
-        rejection[bin-1]  = 1.0 / (ljets_accepted / ljet_total);
+        Double_t efficiency = bjets_accepted / bjet_total;
+        if ( ljets_accepted == 0 ) continue;
+        bjet_efficiency.push_back(efficiency);
+        ljet_rejection.push_back(ljet_total / ljets_accepted);
     }
 
-    TGraph* graph = new TGraph(num_bins, efficiency, rejection);
+    int num_graph_points = bjet_efficiency.size();
+    Double_t* graph_x = new Double_t[num_graph_points];
+    Double_t* graph_y = new Double_t[num_graph_points];
+    for (int bin = 0; bin < num_graph_points; bin++) {
+        graph_x[bin] = bjet_efficiency[bin];
+        graph_y[bin] = ljet_rejection[bin];
+    }
+
+    TGraph* graph = new TGraph(num_bins, graph_x, graph_y);
     graph->SetTitle( graph_title.c_str() );
     graph->SetLineColor(line_color);
     graph->SetFillColor(0);
@@ -44,13 +53,13 @@ void draw_roc(string event, const vector<TGraph*>& roc_vector) {
     float y_axis_offset = 1.5;
     TCanvas* canvas = new TCanvas("c1", "canvas", width, height);
 
-    TMultiGraph* multigraph = new TMultiGraph( "mgraph", ("Online vs Offline ROC Curves for "
+    TMultiGraph* multigraph = new TMultiGraph( "mgraph", ("MV2c10 ROC Curves for "
                                                            + cevent + " Events With "
                                                            "Jet p_{T} > 55 GeV and "
                                                            "|#eta| < 2.5").c_str() );
     for (TGraph* graph : roc_vector) {multigraph->Add(graph);}
 
-    multigraph->Draw("A");
+    multigraph->Draw("AC");
     multigraph->GetXaxis()->SetTitle("B-Jet Efficiency");
     multigraph->GetYaxis()->SetTitle("Light-Jet Rejection");
     multigraph->GetYaxis()->SetTitleOffset(y_axis_offset);
@@ -64,7 +73,7 @@ void draw_roc(string event, const vector<TGraph*>& roc_vector) {
     float ystart = 0.6;
     float yend = 0.8;
     canvas->BuildLegend(xstart, ystart, xend, yend)->SetTextSize(0.03);
-    canvas->SaveAs( ("performance_roc_"+event+".png").c_str() );
+    canvas->SaveAs( ("mv2c10_roc_"+event+".pdf").c_str() );
     delete(canvas);
 }
 
@@ -76,17 +85,10 @@ void roc_curves(string event) {
     int dashed_line = 9;
 
     vector<TGraph*> roc_vector;
-    //roc_vector.push_back( generate_roc(event, "retune_ftkVtx_wrong", "t#bar{t} Retune w/ FTK-VTK Tracks Wrong", kMagenta, line_width, dashed_line) );
-    //roc_vector.push_back( generate_roc(event, "retune_hlt_alt", "t#bar{t} Retune w/ HLT Tracks Alt", kGreen, line_width, dashed_line) );
-    //roc_vector.push_back( generate_roc(event, "retune_ftkVtx_alt", "t#bar{t} Retune w/ FTK-VTK Tracks Alt", kBlue, line_width, dashed_line) );
-    roc_vector.push_back( generate_roc(event, "retune_hlt", "t#bar{t} Retune w/ HLT Tracks", kBlack, line_width, solid_line) );
-    roc_vector.push_back( generate_roc(event, "retune_ftkVtx", "t#bar{t} Retune w/ FTKVtx Tracks", kRed, line_width, solid_line) );
-    roc_vector.push_back( generate_roc(event, "retune_hlt_gutted2", "t#bar{t} Retune w/ HLT Tracks-LI2", kBlue, line_width, dashed_line) );
-    roc_vector.push_back( generate_roc(event, "retune_ftkVtx_gutted2", "t#bar{t} Retune w/ FTKVtx Tracks-LI2", kOrange, line_width, dashed_line) );
-    //roc_vector.push_back( generate_roc(event, "retune_ftk", "t#bar{t} Retune w/ FTK IDTrig Tracks", kBlue, line_width, solid_line) );
-    //roc_vector.push_back( generate_roc(event, "retune_ftkRefit", "t#bar{t} Retune w/ FTK-Refit Tracks", kGreen, line_width, solid_line) );
-    //roc_vector.push_back( generate_roc(event, "retune_hlt_gutted", "t#bar{t} Retune w/ HLT Tracks, LI", kBlue, line_width, solid_line) );
-    //roc_vector.push_back( generate_roc(event, "retune_ftkVtx_gutted", "t#bar{t} Retune w/ FTKVtx Tracks, LI", kOrange, line_width, solid_line) );
+    roc_vector.push_back( generate_roc(event, "retune_hlt", "Retuned HLT", kBlue, line_width, solid_line) );
+    roc_vector.push_back( generate_roc(event, "retune_ftk_idtrig", "Retuned FTK-IDTrig", kRed, line_width, solid_line) );
+    roc_vector.push_back( generate_roc(event, "retune_ftkRefit_idtrig", "Retuned FTKRefit-IDTrig", kOrange+1, line_width, dashed_line) );
+    roc_vector.push_back( generate_roc(event, "defaultHLT", "TrigBTagCalibRUN12-08-14", kBlack, line_width, dashed_line) );
 
     draw_roc(event, roc_vector);
 }

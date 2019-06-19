@@ -11,7 +11,9 @@ echo "Checking $dir $job..."
 failedjobs=''
 totaljobs=0
 numfailed=0
-for log in $(ls -v "${dir}/log_tuning-${job}_"*); do
+#for log in $(ls -v "${dir}/log_tuning-${job}_"*); do
+loglist=$(find $dir -maxdepth 1 -name "log_tuning-${job}_*.out" | sort -V)
+for log in $loglist; do 
     lognumber=$(echo $log | sed 's/.*_\([0-9]\+\)\.out/\1/')
     exitregex='s/Py:Athena\s\+INFO leaving with code \([0-9]\+\):.*/\1/p'
     exitcode=$(tail -n10 $log | sed -n "$exitregex")
@@ -43,7 +45,7 @@ if ((numfailed)); then
         echo "Found ${numfailed} errors in ${dir}, job ${job}"
         reruncommand="sbatch --mem=3G -p htc -a $failedjobs ${dir}/launch.py"
         echo $reruncommand > ${rerunout}
-        echo "Rerun with 'bash ${rerunout}_rerun.sh'"
+        echo "Rerun with 'bash ${rerunout}'"
     fi
 else
     echo "All jobs from ${dir}, job ${job} successful"

@@ -56,12 +56,15 @@ include ("RecExCommon/RecExCommon_topOptions.py")
 from AthenaCommon.AlgSequence import AlgSequence
 algSeq = AlgSequence()
 
-### GEO Business 
-from AthenaCommon.GlobalFlags import globalflags
-print "detDescr from global flags= "+str(globalflags.DetDescrVersion)
-from AtlasGeoModel.InDetGMJobProperties import GeometryFlags as geoFlags
-print "geoFlags.Run()   = "+geoFlags.Run()
-print "geoFlags.isIBL() = "+str(  geoFlags.isIBL() )
+#The below code appears to be incompatible with Athena > 21.3
+#I have disable it because it doesn't look like it does anything critical
+#Proceed with Caution
+#!#### GEO Business 
+#!#from AthenaCommon.GlobalFlags import globalflags
+#!#print "detDescr from global flags= "+str(globalflags.DetDescrVersion)
+#!#from AtlasGeoModel.InDetGMJobProperties import GeometryFlags as geoFlags
+#!#print "geoFlags.Run()   = "+geoFlags.Run()
+#!#print "geoFlags.isIBL() = "+str(  geoFlags.isIBL() )
 
 ###############################################################
 ### THIS is the full retagging configuration
@@ -137,7 +140,7 @@ from TrackVertexAssociationTool.TrackVertexAssociationToolConf import CP__TightT
 ToolSvc+=CP__TightTrackVertexAssociationTool("TightVertexAssocTool",dzSinTheta_cut=3, doPV=True)
 
 from InDetTrackSelectionTool.InDetTrackSelectionToolConf import InDet__InDetTrackSelectionTool
-ToolSvc+=InDet__InDetTrackSelectionTool("InDetTrackSelTool", CutLevel="Loose", maxZ0SinTheta=3)
+ToolSvc+=InDet__InDetTrackSelectionTool("InDetTrackSelTool", CutLevel="MYINDETTRACKCUT", maxZ0SinTheta=3)
 
 
 from TrigDecisionTool.TrigDecisionToolConf import Trig__TrigDecisionTool
