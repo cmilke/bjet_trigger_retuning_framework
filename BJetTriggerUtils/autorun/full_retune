@@ -57,23 +57,28 @@ lockvariables() {
 export -f lockvariables
 
 
-echo -e "\n\nAUTORUN HAS BEEN MODIFIED FROM DEFAULT.\nARE YOU SURE THIS IS WHAT YOU WANT??"
+# The below series of echo statements are only to be uncommented in order to create reminders
+# to myself for when I have altered these scripts from their standard behaviour...
+# which happens a lot because this process is complicated and often requires altering details
+
+#echo -e "\n\nAUTORUN HAS BEEN MODIFIED FROM DEFAULT.\nARE YOU SURE THIS IS WHAT YOU WANT??"
 #echo testBTriggerTuning_template is linked to default steering file
 #echo run_analysis_array EXITS at line 41
-echo full_retune has been modified! Disabled steps 1-2
+#echo full_retune has been modified! Disabled steps 1-2
 #echo Step 1.1 has been modified! Producing flavntuples
 #echo Step 1.2 has been modified!
 #echo Step 2 has been modified!
 #echo Step 3.1 has been modified!
 #echo Step 3.2 has been modified!
 #echo Step 4 has been modified!
-echo -e '\n\n'
-sleep 5
+#echo -e '\n\n'
+#sleep 5
 
+# Begin retuning process
 lockvariables
-#bash retune_step1.1.sh || (echo 'Step 1.1 encountered an error...'; exit 1)
-#bash retune_step1.2.sh || (echo 'Step 1.2 encountered an error...'; exit 1)
-#bash retune_step2.sh   || (echo 'Step 2 encountered an error...'; exit 1)
+bash retune_step1.1.sh || (echo 'Step 1.1 encountered an error...'; exit 1)
+bash retune_step1.2.sh || (echo 'Step 1.2 encountered an error...'; exit 1)
+bash retune_step2.sh   || (echo 'Step 2 encountered an error...'; exit 1)
 bash retune_step3.1.sh || (echo 'Step 3.1 encountered an error...'; exit 1)
 bash retune_step3.2.sh || (echo 'Step 3.2 encountered an error...'; exit 1)
 bash retune_step4.sh   || (echo 'Step 4 encountered an error...'; exit 1)
